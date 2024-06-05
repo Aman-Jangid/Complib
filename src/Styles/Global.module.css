@@ -15,3 +15,19 @@
   background-color: rgba(0, 0, 0, 0.5);
   text-align: center;
 }
+
+.iconButton {
+  max-width: 90%;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  font-weight: bold;
+}
+
+/* .iconButton p {
+  width: 60%;
+  text-align: center;
+} */

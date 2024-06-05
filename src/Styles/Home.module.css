@@ -2,6 +2,7 @@
   width: 100vw;
   height: 200vh;
   background-color: #2d3250;
+  overflow-y: hidden;
 }
 
 /* Header Components */
@@ -13,6 +14,7 @@
   display: grid;
   grid-template-columns: 10% 40% 30% 20%;
   align-content: center;
+  z-index: 100;
 }
 
 .logo {
@@ -36,7 +38,11 @@
   background-color: transparent;
   border: none;
   width: 95%;
-  font-size: 22px;
+  font-size: 18px;
+}
+
+.searchBar input::placeholder {
+  color: #ccc;
 }
 
 .searchBar input:focus {
@@ -47,7 +53,70 @@
 .preferences {
   display: flex;
   width: 100%;
+  height: 60px;
+  align-self: center;
   align-items: center;
   justify-content: center;
+  gap: 2rem;
+}
+
+.preferences > div:first-child {
+  display: flex;
   gap: 10px;
+  align-items: center;
+}
+
+.userDropdown {
+  display: flex;
+  width: 9rem;
+  height: 44px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 30px;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  padding: 0 5px 0 15px;
+}
+
+/* Content Area - Includes Sidebars */
+.contentContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  padding-top: 60px;
+  overflow-y: scroll;
+}
+
+.onThisPageSection {
+  width: 15%;
+  height: 100%;
+  background-color: #2d3250;
+  border-right: 1px solid #424769;
+}
+
+.contentArea {
+  background-color: #2d3250;
+  width: 70%;
+}
+
+.sidebarSection {
+  width: 15%;
+  background-color: #2d3250;
+  border-left: 1px solid #424769;
+}
+
+.onThisPage,
+.sidebar {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 15%;
+}
+
+.sidebar {
+  margin: 2.5rem 0 0 0;
+  justify-content: center;
+  align-items: center;
 }

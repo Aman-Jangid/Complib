@@ -2,7 +2,9 @@ import styles from "../Styles/Home.module.css";
 import SearchBar from "./SearchBar";
 
 // icons
-import { FaGithub, FaSun, FaUser } from "react-icons/fa";
+import { CiDark, CiLight } from "react-icons/ci";
+import { FaGithub } from "react-icons/fa";
+import UserDropdown from "./UserDropdown";
 
 function Header() {
   return (
@@ -10,15 +12,20 @@ function Header() {
       <h1 className={styles.logo}>COMPLIB</h1>
       <SearchBar />
       <div className={styles.preferences}>
-        <div className={styles.github}>
-          <FaGithub />
+        <div>
+          <div className={styles.github}>
+            <FaGithub color="white" size={28} />
+          </div>
+          <div className={styles.theme}>
+            {"dark" ? (
+              <CiDark color="white" size={32} />
+            ) : (
+              <CiLight color="white" size={32} />
+            )}
+          </div>
         </div>
-        <div className={styles.theme}>
-          <FaSun />
-        </div>
-        {/* replace the element below with a component having user pfp and username */}
-        <div className={styles.theme}>
-          <FaUser />
+        <div>
+          <UserDropdown />
         </div>
       </div>
     </header>
