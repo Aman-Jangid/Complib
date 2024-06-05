@@ -1,38 +1,51 @@
+import { FC } from "react";
+
 import styles from "../Styles/Global.module.css";
 
 import * as mdIcons from "react-icons/md";
 import * as piIcons from "react-icons/pi";
 import * as siIcons from "react-icons/si";
-import * as tiIcons from "react-icons/ti";
+import * as tbIcons from "react-icons/tb";
 import * as faIcons from "react-icons/fa";
 
-function IconButton() {
-  const iconName = "FaReact";
-  const iconPack: any = "fa";
-  const w = "150%";
-  const h = "44px";
-  const bgc = "#7077A1";
+interface props {
+  iconName: string;
+  iconPack: string;
+  width: string;
+  height: string;
+  backgroundColor: string;
+  color: string;
+  textColor: string;
+  text: string;
+  active: Boolean;
+}
 
+const IconButton: FC<props> = (props): JSX.Element => {
   const iconPacks: any = {
     md: mdIcons,
     pi: piIcons,
     si: siIcons,
-    ti: tiIcons,
+    tb: tbIcons,
     fa: faIcons,
   };
 
-  const SelectedIconPack = iconPacks[iconPack];
-  const Icon = SelectedIconPack[iconName];
+  const SelectedIconPack = iconPacks[props.iconPack];
+  const Icon = SelectedIconPack[props.iconName];
 
   return (
     <div
       className={styles.iconButton}
-      style={{ width: w, height: h, backgroundColor: bgc }}
+      style={{
+        width: props.width,
+        height: props.height,
+        backgroundColor: props.backgroundColor,
+        border: props.active ? "2px solid white" : "None",
+      }}
     >
-      <Icon size={32} color={"white"} />
-      <p>{iconName.slice(2)}</p>
+      <Icon size={32} color={props.color} />
+      <p style={{ color: props.textColor }}>{props.text}</p>
     </div>
   );
-}
+};
 
 export default IconButton;

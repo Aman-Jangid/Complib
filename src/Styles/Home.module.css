@@ -120,3 +120,31 @@
   justify-content: center;
   align-items: center;
 }
+
+.onThisPage {
+  text-align: start;
+  margin-left: -1rem;
+}
+
+.indexHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 2rem 1rem 0.5rem;
+  color: #ddd;
+}
+
+.indexItemGroup {
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.listItem {
+  color: #8990b4;
+  font-weight: bold;
+  border-left: 1px solid #424769;
+  text-align: start;
+  padding-bottom: 3px;
+}
