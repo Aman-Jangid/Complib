@@ -48,6 +48,17 @@ function Sidebar() {
         textColor="white"
         text="Flutter"
       />
+      <IconButton
+        active={false}
+        backgroundColor="#7077A1"
+        color="white"
+        width="150%"
+        height="44px"
+        iconPack="tb"
+        iconName="TbPlus"
+        textColor="white"
+        text=""
+      />
     </div>
   );
 }

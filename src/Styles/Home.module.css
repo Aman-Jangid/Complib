@@ -19,7 +19,8 @@
 
 .logo {
   grid-column: 1;
-  color: rgba(0, 0, 0, 0.3);
+  /* color: rgba(0, 0, 0, 0.3); */
+  color: #7077a1;
 }
 
 .searchBar {
@@ -81,11 +82,39 @@
 
 /* Content Area - Includes Sidebars */
 .contentContainer {
-  width: 100%;
   height: 100%;
+  width: 100%;
   display: flex;
   padding-top: 60px;
-  overflow-y: scroll;
+  overflow: hidden;
+}
+
+.contentArea {
+  width: 70%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #2d3250;
+}
+
+.contentHeading {
+  color: #7077a1;
+  font-weight: bold;
+  font-size: 24px;
+  text-align: start;
+  margin: 0 1.5rem;
+}
+
+.contentGrid {
+  position: relative;
+  margin-left: 1.5rem;
+  margin-bottom: 110vh;
+  display: grid;
+  grid-template-columns: 25% 25% 25% 25%;
+  row-gap: 2rem;
+  align-items: start;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .onThisPageSection {
@@ -93,11 +122,6 @@
   height: 100%;
   background-color: #2d3250;
   border-right: 1px solid #424769;
-}
-
-.contentArea {
-  background-color: #2d3250;
-  width: 70%;
 }
 
 .sidebarSection {
@@ -147,4 +171,15 @@
   border-left: 1px solid #424769;
   text-align: start;
   padding-bottom: 3px;
+}
+
+/* Containers */
+
+.reactContainer {
+  width: 300px;
+  height: 500px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
 }
