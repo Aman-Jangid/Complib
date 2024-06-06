@@ -37,6 +37,8 @@
 
 .searchBar input {
   background-color: transparent;
+  color: #eee;
+  letter-spacing: 1px;
   border: none;
   width: 95%;
   font-size: 18px;

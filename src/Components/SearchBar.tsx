@@ -1,9 +1,19 @@
+import { ChangeEvent, FC } from "react";
 import styles from "../Styles/Home.module.css";
 import Shortcut from "./Shortcut";
 
 import { CiSearch } from "react-icons/ci";
 
-function SearchBar() {
+interface Props {
+  value: string;
+  setValue: Function;
+}
+
+const SearchBar: FC<Props> = (props): JSX.Element => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    props.setValue(event.target.value);
+  };
+
   return (
     <div className={styles.searchBar}>
       <div>
@@ -11,14 +21,19 @@ function SearchBar() {
       </div>
       <div>
         {/* Bind to state and make little tweaks */}
-        <input type="text" placeholder="Search" />
+        <input
+          type="text"
+          value={props.value}
+          placeholder="Search"
+          onChange={(e) => handleInputChange(e)}
+        />
       </div>
       <div>
         {/* TODO: Shortcut should receive keys as arguments */}
-        <Shortcut />
+        <Shortcut modifierKey="ctrlKey" SymbolKey="k" />
       </div>
     </div>
   );
-}
+};
 
 export default SearchBar;

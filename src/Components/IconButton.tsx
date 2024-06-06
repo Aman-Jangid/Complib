@@ -8,7 +8,7 @@ import * as siIcons from "react-icons/si";
 import * as tbIcons from "react-icons/tb";
 import * as faIcons from "react-icons/fa";
 
-interface props {
+interface Props {
   iconName: string;
   iconPack: string;
   width: string;
@@ -18,9 +18,10 @@ interface props {
   textColor: string;
   text: string;
   active: Boolean;
+  // onPress: Function;
 }
 
-const IconButton: FC<props> = (props): JSX.Element => {
+const IconButton: FC<Props> = (props): JSX.Element => {
   const iconPacks: any = {
     md: mdIcons,
     pi: piIcons,
