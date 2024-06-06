@@ -25,6 +25,16 @@
   gap: 10px;
   color: white;
   font-weight: bold;
+  user-select: none;
+}
+
+.iconButton:active {
+  background-color: #2d3250 !important;
+}
+
+.iconButton:hover {
+  filter: brightness(1.2);
+  transition: all 0.3s;
 }
 
 /* .iconButton p {

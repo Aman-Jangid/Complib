@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, MouseEventHandler } from "react";
 
 import styles from "../Styles/Global.module.css";
 
@@ -18,7 +18,7 @@ interface Props {
   textColor: string;
   text: string;
   active: Boolean;
-  // onPress: Function;
+  onClick: MouseEventHandler<HTMLDivElement>;
 }
 
 const IconButton: FC<Props> = (props): JSX.Element => {
@@ -41,7 +41,9 @@ const IconButton: FC<Props> = (props): JSX.Element => {
         height: props.height,
         backgroundColor: props.backgroundColor,
         border: props.active ? "2px solid white" : "None",
+        // padding: props.active ? "none" : "2px",
       }}
+      onClick={props.onClick}
     >
       <Icon size={32} color={props.color} />
       <p style={{ color: props.textColor }}>{props.text}</p>

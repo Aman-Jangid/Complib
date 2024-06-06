@@ -30,13 +30,28 @@ function Header() {
       <div className={styles.preferences}>
         <div>
           <div className={styles.github}>
-            <FaGithub color="white" size={28} onClick={openUrl} />
+            <FaGithub
+              color="white"
+              size={28}
+              onClick={openUrl}
+              className={styles.headerButton}
+            />
           </div>
           <div className={styles.theme}>
             {theme === "dark" ? (
-              <CiDark color="white" size={32} onClick={toggleTheme} />
+              <CiDark
+                color="white"
+                size={32}
+                onClick={toggleTheme}
+                className={styles.headerButton}
+              />
             ) : (
-              <CiLight color="white" size={32} onClick={toggleTheme} />
+              <CiLight
+                color="white"
+                size={32}
+                onClick={toggleTheme}
+                className={styles.headerButton}
+              />
             )}
           </div>
         </div>
