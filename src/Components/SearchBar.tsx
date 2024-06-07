@@ -1,4 +1,4 @@
-import { ChangeEvent, FC } from "react";
+import { ChangeEvent, FC, useState } from "react";
 import styles from "../Styles/Home.module.css";
 import Shortcut from "./Shortcut";
 
@@ -10,26 +10,33 @@ interface Props {
 }
 
 const SearchBar: FC<Props> = (props): JSX.Element => {
+  const [focused, setFocused] = useState<boolean>(false);
+
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     props.setValue(event.target.value);
   };
 
   return (
-    <div className={styles.searchBar}>
+    <div
+      className={styles.searchBar}
+      style={{
+        outline: focused ? "2px solid #35384b" : "none",
+      }}
+    >
       <div>
         <CiSearch color="white" size={22} />
       </div>
       <div>
-        {/* Bind to state and make little tweaks */}
         <input
           type="text"
           value={props.value}
           placeholder="Search"
           onChange={(e) => handleInputChange(e)}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
         />
       </div>
       <div>
-        {/* TODO: Shortcut should receive keys as arguments */}
         <Shortcut modifierKey="ctrlKey" SymbolKey="k" />
       </div>
     </div>

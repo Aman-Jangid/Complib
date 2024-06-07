@@ -3,6 +3,7 @@ import styles from "../Styles/Home.module.css";
 import { FaPlus } from "react-icons/fa6";
 
 import IndexItemGroup from "./IndexItemGroup";
+import { useState } from "react";
 
 const index: Array<Object> = [
   {
@@ -13,6 +14,7 @@ const index: Array<Object> = [
       "CheckBoxes",
       "Switches",
     ],
+    key: 0,
   },
   {
     Cards: [
@@ -26,6 +28,7 @@ const index: Array<Object> = [
       "Animated Card",
       "Grid Card",
     ],
+    key: 1,
   },
   {
     Navigation: [
@@ -35,6 +38,7 @@ const index: Array<Object> = [
       "Indexes",
       "Link Containers",
     ],
+    key: 2,
   },
   {
     Carousels: [
@@ -45,10 +49,18 @@ const index: Array<Object> = [
       "Interactive Carousels",
       "News Carousels",
     ],
+    key: 3,
   },
 ];
 
 function OnThisPage() {
+  // 2d array - first element is the category, second element is the list
+  const [activeItem, setActiveItem] = useState<String>("");
+
+  const setActive = (item: String) => {
+    setActiveItem(item);
+  };
+
   return (
     <div className={styles.onThisPage}>
       <ul>
@@ -56,16 +68,14 @@ function OnThisPage() {
           <h3 className={styles.indexHeadingText}>Components</h3>
           <FaPlus size={22} />
         </div>
-        <div
-          style={{
-            borderLeft: "1px solid #424769",
-            overflowY: "auto",
-          }}
-        >
+        <div className={styles.indexItemsGroup}>
           {index.map((obj: Object) => (
             <IndexItemGroup
               heading={Object.keys(obj)[0]}
               items={Object.values(obj)[0]}
+              key={Object.values(obj)[1]}
+              activeItem={activeItem}
+              handleItemClick={setActive}
             />
           ))}
         </div>

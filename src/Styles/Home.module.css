@@ -21,6 +21,7 @@
   grid-column: 1;
   /* color: rgba(0, 0, 0, 0.3); */
   color: #7077a1;
+  user-select: none;
 }
 
 .searchBar {
@@ -48,6 +49,7 @@
 
 .searchBar input::placeholder {
   color: #ccc;
+  user-select: none;
 }
 
 .searchBar input:focus {
@@ -173,18 +175,39 @@
 
 .onThisPage {
   text-align: start;
+  height: 100%;
+  overflow: scroll;
+  /* scrollbar-width: none; */
+}
+
+.indexItemsGroup {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-left: 1px solid #424769;
   margin-left: -1rem;
+  gap: 10px;
 }
 
 .indexHeading {
+  position: sticky;
+  padding-top: 20px;
+  width: 18rem;
+  transform: translate(-16.5%, -30%);
+  top: 0;
+  left: 0;
+  background-color: rgba(45, 50, 80, 0.418);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   margin: 0 2rem 1rem 0.5rem;
   color: #ddd;
 }
 
 .indexItemGroup {
+  margin-left: -0.5rem;
   padding-right: 10px;
   display: flex;
   flex-direction: column;
@@ -194,9 +217,25 @@
 .listItem {
   color: #8990b4;
   font-weight: bold;
+  border: 1px solid transparent;
   border-left: 1px solid #424769;
   text-align: start;
   padding-bottom: 3px;
+  transition: all 0.15s;
+  cursor: pointer;
+  user-select: text;
+}
+
+.listItem:hover {
+  color: #ccc;
+  border: 1px solid #424769;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.listItem:active {
+  color: #fff;
+  background-color: #2e3249;
 }
 
 /* Containers */

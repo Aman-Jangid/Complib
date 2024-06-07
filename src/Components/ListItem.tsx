@@ -4,6 +4,7 @@ import styles from "../Styles/Home.module.css";
 interface Props {
   item: String;
   active: Boolean;
+  setActive: Function;
 }
 
 // the links should be able to jump through sections in ContentArea
@@ -20,7 +21,11 @@ const activeStyles: Object = {
 
 const ListItem: FC<Props> = (props): JSX.Element => {
   return (
-    <ul className={styles.listItem} style={props.active ? activeStyles : {}}>
+    <ul
+      className={styles.listItem}
+      style={props.active ? activeStyles : {}}
+      onClick={() => props.setActive(props.item)}
+    >
       {props.item}
     </ul>
   );

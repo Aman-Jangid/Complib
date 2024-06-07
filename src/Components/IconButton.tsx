@@ -40,7 +40,7 @@ const IconButton: FC<Props> = (props): JSX.Element => {
         width: props.width,
         height: props.height,
         backgroundColor: props.backgroundColor,
-        border: props.active ? "2px solid white" : "None",
+        border: props.active ? "2px solid white" : "2px solid transparent",
         // padding: props.active ? "none" : "2px",
       }}
       onClick={props.onClick}

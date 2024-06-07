@@ -14,6 +14,7 @@
   color: white;
   background-color: rgba(0, 0, 0, 0.5);
   text-align: center;
+  user-select: none;
 }
 
 .iconButton {
@@ -37,7 +38,15 @@
   transition: all 0.3s;
 }
 
-/* .iconButton p {
-  width: 60%;
-  text-align: center;
-} */
+.icon {
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.icon:hover {
+  filter: brightness(1.6);
+}
+
+.icon:active {
+  filter: brightness(0.6);
+}

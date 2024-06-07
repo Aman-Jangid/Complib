@@ -51,6 +51,10 @@ function Sidebar() {
     setButtons(updatedButtons);
   };
 
+  const handleAddButton = () => {
+    console.log("Adding new Language/Framework Button!");
+  };
+
   return (
     <div className={styles.sidebar}>
       {buttons.map((button) => (
@@ -68,6 +72,19 @@ function Sidebar() {
           onClick={() => handleClick(button.key)}
         />
       ))}
+      <IconButton
+        active={false}
+        backgroundColor="#424769"
+        color="white"
+        width="150%"
+        height="44px"
+        iconPack="fa"
+        iconName="FaPlus"
+        text=""
+        textColor="white"
+        key={-1}
+        onClick={handleAddButton}
+      />
     </div>
   );
 }
