@@ -19,6 +19,7 @@ interface Props {
   text: string;
   active: Boolean;
   onClick: MouseEventHandler<HTMLDivElement>;
+  iconSize?: number;
 }
 
 const IconButton: FC<Props> = (props): JSX.Element => {
@@ -45,7 +46,7 @@ const IconButton: FC<Props> = (props): JSX.Element => {
       }}
       onClick={props.onClick}
     >
-      <Icon size={32} color={props.color} />
+      <Icon size={props.iconSize ? props.iconSize : 32} color={props.color} />
       <p style={{ color: props.textColor }}>{props.text}</p>
     </div>
   );
