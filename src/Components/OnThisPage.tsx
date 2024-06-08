@@ -1,11 +1,12 @@
 import styles from "../Styles/Home.module.css";
+import stylesGlobal from "../Styles/Global.module.css";
 
 import { FaPlus } from "react-icons/fa6";
 
 import IndexItemGroup from "./IndexItemGroup";
 import { useState } from "react";
 
-const index: Array<Object> = [
+const indexArr: Array<Object> = [
   {
     Buttons: [
       "Icon Buttons",
@@ -14,6 +15,7 @@ const index: Array<Object> = [
       "CheckBoxes",
       "Switches",
     ],
+    editing: false,
     key: 0,
   },
   {
@@ -28,6 +30,7 @@ const index: Array<Object> = [
       "Animated Card",
       "Grid Card",
     ],
+    editing: false,
     key: 1,
   },
   {
@@ -38,6 +41,7 @@ const index: Array<Object> = [
       "Indexes",
       "Link Containers",
     ],
+    editing: false,
     key: 2,
   },
   {
@@ -49,16 +53,42 @@ const index: Array<Object> = [
       "Interactive Carousels",
       "News Carousels",
     ],
+    editing: false,
     key: 3,
   },
 ];
 
 function OnThisPage() {
-  // 2d array - first element is the category, second element is the list
   const [activeItem, setActiveItem] = useState<String>("");
+  const [index, setIndex] = useState<Array<Object>>(indexArr);
 
   const setActive = (item: String) => {
     setActiveItem(item);
+  };
+
+  const handleRename = (name: string, key: number) => {
+    let tempIndex = [...index];
+    // check if the array in the object is empty.
+
+    const newComponent = { [name]: [], editing: false, key: key };
+    tempIndex[key] = newComponent;
+    // }
+    setIndex(tempIndex);
+  };
+
+  const handleAddComponent = () => {
+    setIndex([
+      ...index,
+      { ["component" + index.length]: [], editing: true, key: index.length },
+    ]);
+    // }
+  };
+
+  const handleEditComponent = (i: number) => {
+    let item = index[i];
+    let tempList = [...index];
+    tempList[i] = { ...item, editing: true };
+    setIndex(tempList);
   };
 
   return (
@@ -66,16 +96,24 @@ function OnThisPage() {
       <ul>
         <div className={styles.indexHeading}>
           <h3 className={styles.indexHeadingText}>Components</h3>
-          <FaPlus size={22} />
+          <FaPlus
+            size={22}
+            className={stylesGlobal.icon}
+            onClick={handleAddComponent}
+          />
         </div>
         <div className={styles.indexItemsGroup}>
           {index.map((obj: Object) => (
             <IndexItemGroup
               heading={Object.keys(obj)[0]}
               items={Object.values(obj)[0]}
-              key={Object.values(obj)[1]}
+              key={Object.values(obj)[2]}
               activeItem={activeItem}
               handleItemClick={setActive}
+              editing={Object.values(obj)[1]}
+              handleRename={handleRename}
+              handleEditGroup={handleEditComponent}
+              currentIndex={Object.values(obj)[2]}
             />
           ))}
         </div>

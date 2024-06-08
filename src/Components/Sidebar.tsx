@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styles from "../Styles/Home.module.css";
 import IconButton from "./IconButton";
+import { GlobalContext } from "../Context/GlobalContext";
 
 interface Button {
   active: boolean;
@@ -42,7 +43,18 @@ function Sidebar() {
     },
   ]);
 
+  const { category, setCategory } = useContext(GlobalContext);
+
+  console.log(category);
+
+  useEffect(() => {
+    const index = buttons.findIndex((button) => button.text === category);
+    handleClick(index);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category]);
+
   const handleClick = (key: number) => {
+    setCategory(buttons[key].text);
     const updatedButtons = buttons.map((button) =>
       button.key === key
         ? { ...button, active: true }

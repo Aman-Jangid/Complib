@@ -1,12 +1,18 @@
 import React from "react";
 import "./App.css";
 import Home from "./Pages/Home";
+import { GlobalProvider } from "./Context/GlobalContext";
+import { ThemeProvider } from "./Context/ThemeContext";
 
 function App() {
   return (
-    <div className="App">
-      <Home />
-    </div>
+    <GlobalProvider>
+      <ThemeProvider>
+        <div className="App">
+          <Home />
+        </div>
+      </ThemeProvider>
+    </GlobalProvider>
   );
 }
 
