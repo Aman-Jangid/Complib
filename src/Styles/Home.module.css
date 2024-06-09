@@ -258,10 +258,12 @@
   border: 1px solid transparent;
   border-left: 1px solid #424769;
   text-align: start;
-  padding-bottom: 3px;
+  padding-right: 10px;
   transition: all 0.15s;
   cursor: pointer;
   user-select: text;
+  display: flex;
+  justify-content: space-between;
 }
 
 .listItem:hover {
@@ -274,6 +276,19 @@
 .listItem:active {
   color: #fff;
   background-color: #2e3249;
+}
+
+.listItemInput {
+  display: flex;
+  color: #7077a1;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #424769;
+  width: 100%;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 10px 10px -1.5rem;
 }
 
 /* Containers */

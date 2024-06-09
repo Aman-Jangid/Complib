@@ -15,21 +15,18 @@ import {
 interface Props {
   heading: String;
   items: Array<String>;
-  handleItemClick: Function;
-  handleRename: Function;
-  handleEditGroup: Function;
   activeItem: String;
   editing?: Boolean;
   currentIndex: Number;
+  handleItemClick: Function;
+  handleRename: Function;
+  handleEditGroup: Function;
 }
-
-// the links should be able to jump through sections in ContentArea
-// TODO : Also receive the current category/list
 
 const IndexItemGroup: FC<Props> = (props): JSX.Element => {
   const [collapsed, setCollapsed] = useState<Boolean>(false);
   const [items, setItems] = useState<Array<String>>(props.items);
-  const [value, setValue] = useState<string>(props.heading.toString());
+  const [value, setValue] = useState<String>(props.heading);
 
   const handleCollapse = () => {
     setCollapsed(!collapsed);
@@ -39,10 +36,6 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
   // 1.allow renaming the groupHeading
   // 2.add delete and rename icons to group's items
   // 3.replace the item with a new one at the same index with the new name or delete it and shift the rest
-
-  const handleAdd = () => {
-    console.log("Add");
-  };
 
   const handleOnChange = (e: FormEvent<HTMLInputElement>) => {
     setValue(e.currentTarget.value);
@@ -54,8 +47,13 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
     }
   };
 
+  const handleRemoveItem = (item: String) => {
+    const newItems = items.filter((listItem) => listItem !== item);
+    setItems(newItems);
+  };
+
   const handleNaming = () => {
-    props.handleRename(value, props.currentIndex, items.length === 0);
+    props.handleRename(value, props.currentIndex, items.length === 0, items);
   };
 
   return (
@@ -71,7 +69,7 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
             <div></div>
             <input
               type="text"
-              value={value}
+              value={value.toString()}
               onChange={handleOnChange}
               onKeyDown={handleEnterOnInput}
               className={styles.indexItemGroupInput}
@@ -119,7 +117,7 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
               <CiCirclePlus
                 size={22}
                 className={stylesGlobal.icon}
-                onClick={handleAdd}
+                onClick={() => {}}
               />
             </div>
           </h3>
@@ -129,6 +127,11 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
             item={listItem}
             active={listItem === props.activeItem}
             setActive={props.handleItemClick}
+            // if editing and the list is not empty, replace text with input and add delete and check icons to the right of the ListItem
+            editing={props.editing && items.length !== 0}
+            removeItem={handleRemoveItem}
+            items={items}
+            setItems={setItems}
           />
         ))}
       </>

@@ -1,94 +1,78 @@
+import { useState } from "react";
+
 import styles from "../Styles/Home.module.css";
 import stylesGlobal from "../Styles/Global.module.css";
 
 import { FaPlus } from "react-icons/fa6";
 
 import IndexItemGroup from "./IndexItemGroup";
-import { useState } from "react";
 
-const indexArr: Array<Object> = [
-  {
-    Buttons: [
-      "Icon Buttons",
-      "Image Buttons",
-      "Radio Buttons",
-      "CheckBoxes",
-      "Switches",
-    ],
-    editing: false,
-    key: 0,
-  },
-  {
-    Cards: [
-      "Outlined Cards",
-      "Media Cards",
-      "Video Cards",
-      "Collapsible Cards",
-      "Image Cards",
-      "Menu Card",
-      "Post Card",
-      "Animated Card",
-      "Grid Card",
-    ],
-    editing: false,
-    key: 1,
-  },
-  {
-    Navigation: [
-      "Back-Links",
-      "Forward-Links",
-      "Pagination",
-      "Indexes",
-      "Link Containers",
-    ],
-    editing: false,
-    key: 2,
-  },
-  {
-    Carousels: [
-      "Image Carousels",
-      "Product Carousels",
-      "Content Carousels",
-      "Testimonial Carousels",
-      "Interactive Carousels",
-      "News Carousels",
-    ],
-    editing: false,
-    key: 3,
-  },
-];
+import data from "../mock/data";
 
 function OnThisPage() {
   const [activeItem, setActiveItem] = useState<String>("");
-  const [index, setIndex] = useState<Array<Object>>(indexArr);
+  const [index, setIndex] = useState(data);
 
   const setActive = (item: String) => {
     setActiveItem(item);
   };
 
-  const handleRename = (name: string, key: number) => {
-    let tempIndex = [...index];
-    // check if the array in the object is empty.
+  const handleRename = (
+    name: string,
+    key: number,
+    isEmpty: boolean,
+    items?: Array<String>
+  ) => {
+    let tempList = [...index];
+    if (isEmpty) {
+      const newComponent = {
+        title: name,
+        items: [],
+        key: key,
+        editing: false,
+        empty: true,
+      };
 
-    const newComponent = { [name]: [], editing: false, key: key };
-    tempIndex[key] = newComponent;
-    // }
-    setIndex(tempIndex);
+      tempList = tempList.filter((item) => item.editing === false);
+      tempList.push(newComponent);
+    } else {
+      const Component = tempList.find((item) => item.key === key);
+      if (Component) {
+        Component.items = items ? items : Component.items;
+        Component.title = name;
+        Component.editing = false;
+        tempList[key] = Component;
+      }
+      console.log(tempList);
+    }
+    setIndex(tempList);
   };
 
   const handleAddComponent = () => {
-    setIndex([
-      ...index,
-      { ["component" + index.length]: [], editing: true, key: index.length },
-    ]);
-    // }
+    const newComponent = {
+      title: "NewComp" + index.length,
+      items: [],
+      key: index.length,
+      editing: true,
+      empty: true,
+    };
+
+    let tempIndex = [newComponent, ...index];
+
+    setIndex(tempIndex);
   };
 
   const handleEditComponent = (i: number) => {
-    let item = index[i];
-    let tempList = [...index];
-    tempList[i] = { ...item, editing: true };
-    setIndex(tempList);
+    const Component = index.find((item) => item.key === i);
+    if (Component) {
+      Component.editing = true;
+    }
+
+    let tempIndex = [...index];
+    if (Component) {
+      tempIndex[i] = Component;
+    }
+    setIndex(tempIndex);
   };
 
   return (
@@ -103,17 +87,17 @@ function OnThisPage() {
           />
         </div>
         <div className={styles.indexItemsGroup}>
-          {index.map((obj: Object) => (
+          {index.map((group) => (
             <IndexItemGroup
-              heading={Object.keys(obj)[0]}
-              items={Object.values(obj)[0]}
-              key={Object.values(obj)[2]}
+              heading={group.title}
+              items={group.items.map((item) => item.title)}
+              key={group.key}
               activeItem={activeItem}
               handleItemClick={setActive}
-              editing={Object.values(obj)[1]}
+              editing={group.editing}
               handleRename={handleRename}
               handleEditGroup={handleEditComponent}
-              currentIndex={Object.values(obj)[2]}
+              currentIndex={group.key}
             />
           ))}
         </div>
