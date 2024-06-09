@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
+
 const data = [
   {
     title: "Buttons",
@@ -88,54 +90,129 @@ const data = [
           },
         ],
         editing: false,
-        key: 0,
+        key: uuidv4(),
       },
-      { title: "Image Buttons", components: [{}], editing: false, key: 1 },
-      { title: "Radio Buttons", components: [{}, {}], editing: false, key: 2 },
-      { title: "CheckBoxes", components: [{}, {}], editing: false, key: 3 },
-      { title: "Switches", components: [{}, {}], editing: false, key: 4 },
+      {
+        title: "Image Buttons",
+        components: [{}],
+        editing: false,
+        key: uuidv4(),
+      },
+      {
+        title: "Radio Buttons",
+        components: [{}, {}],
+        editing: false,
+        key: uuidv4(),
+      },
+      {
+        title: "CheckBoxes",
+        components: [{}, {}],
+        editing: false,
+        key: uuidv4(),
+      },
+      {
+        title: "Switches",
+        components: [{}, {}],
+        editing: false,
+        key: uuidv4(),
+      },
     ],
-    key: 0,
+    key: uuidv4(),
     editing: false,
     empty: false,
   },
   {
     title: "Cards",
     items: [
-      { title: "Outlined Cards", components: [{}, {}], editing: false, key: 0 },
-      { title: "Media Cards", components: [{}, {}], editing: false, key: 1 },
-      { title: "Video Cards", components: [{}, {}], editing: false, key: 2 },
+      {
+        title: "Outlined Cards",
+        components: [{}, {}],
+        editing: false,
+        key: uuidv4(),
+      },
+      {
+        title: "Media Cards",
+        components: [{}, {}],
+        editing: false,
+        key: uuidv4(),
+      },
+      {
+        title: "Video Cards",
+        components: [{}, {}],
+        editing: false,
+        key: uuidv4(),
+      },
       {
         title: "Collapsible Cards",
         components: [{}, {}],
         editing: false,
-        key: 3,
+        key: uuidv4(),
       },
-      { title: "Image Cards", components: [{}, {}], editing: false, key: 4 },
-      { title: "Menu Cards", components: [{}, {}], editing: false, key: 5 },
-      { title: "Post Cards", components: [{}, {}], editing: false, key: 6 },
-      { title: "Animated Cards", components: [{}, {}], editing: false, key: 7 },
-      { title: "Grid Cards", components: [{}, {}], editing: false, key: 8 },
+      {
+        title: "Image Cards",
+        components: [{}, {}],
+        editing: false,
+        key: uuidv4(),
+      },
+      {
+        title: "Menu Cards",
+        components: [{}, {}],
+        editing: false,
+        key: uuidv4(),
+      },
+      {
+        title: "Post Cards",
+        components: [{}, {}],
+        editing: false,
+        key: uuidv4(),
+      },
+      {
+        title: "Animated Cards",
+        components: [{}, {}],
+        editing: false,
+        key: uuidv4(),
+      },
+      {
+        title: "Grid Cards",
+        components: [{}, {}],
+        editing: false,
+        key: uuidv4(),
+      },
     ],
-    key: 1,
+    key: uuidv4(),
     editing: false,
     empty: false,
   },
   {
     title: "Navigation",
     items: [
-      { title: "Back-Links", components: [{}, {}], editing: false, key: 0 },
-      { title: "Forward-Links", components: [{}, {}], editing: false, key: 1 },
-      { title: "Pagination", components: [{}, {}], editing: false, key: 2 },
-      { title: "Indexes", components: [{}, {}], editing: false, key: 3 },
+      {
+        title: "Back-Links",
+        components: [{}, {}],
+        editing: false,
+        key: uuidv4(),
+      },
+      {
+        title: "Forward-Links",
+        components: [{}, {}],
+        editing: false,
+        key: uuidv4(),
+      },
+      {
+        title: "Pagination",
+        components: [{}, {}],
+        editing: false,
+        key: uuidv4(),
+      },
+      { title: "Indexes", components: [{}, {}], editing: false, key: uuidv4() },
       {
         title: "Link Containers",
         components: [{}, {}],
         editing: false,
-        key: 4,
+        key: uuidv4(),
       },
     ],
-    key: 2,
+    key: uuidv4(),
     editing: false,
     empty: false,
   },
@@ -146,35 +223,40 @@ const data = [
         title: "Image Carousels",
         components: [{}, {}],
         editing: false,
-        key: 0,
+        key: uuidv4(),
       },
       {
         title: "Product Carousels",
         components: [{}, {}],
         editing: false,
-        key: 1,
+        key: uuidv4(),
       },
       {
         title: "Content Carousels",
         components: [{}, {}],
         editing: false,
-        key: 2,
+        key: uuidv4(),
       },
       {
         title: "Testimonial Carousels",
         components: [{}, {}],
         editing: false,
-        key: 3,
+        key: uuidv4(),
       },
       {
         title: "Interactive Carousels",
         components: [{}, {}],
         editing: false,
-        key: 4,
+        key: uuidv4(),
       },
-      { title: "News Carousels", components: [{}, {}], editing: false, key: 5 },
+      {
+        title: "News Carousels",
+        components: [{}, {}],
+        editing: false,
+        key: uuidv4(),
+      },
     ],
-    key: 3,
+    key: uuidv4(),
     editing: false,
     empty: false,
   },
@@ -194,13 +276,11 @@ interface Item {
   title: string;
   components: Component[];
   editing: boolean;
-  key: number;
 }
 
 interface Data {
   title: string;
   items: Item[];
-  key: number;
   editing: boolean;
   empty: boolean;
 }

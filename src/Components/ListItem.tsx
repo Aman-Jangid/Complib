@@ -1,22 +1,22 @@
 import React, { CSSProperties, FC, useEffect, useState } from "react";
-
 import styles from "../Styles/Home.module.css";
 import stylesGlobal from "../Styles/Global.module.css";
-
 import { IoRemoveCircleOutline } from "react-icons/io5";
 
-interface Props {
-  item: string;
-  active: boolean;
-  setActive: (active: string) => void;
-  removeItem: (item: string) => void;
-  setItems: (items: string[]) => void;
-  items: string[];
-  editing?: boolean;
+interface Item {
+  id: string;
+  title: string;
 }
 
-// the links should be able to jump through sections in ContentArea
-// TODO : Also receive the current category/list
+interface Props {
+  item: Item;
+  active: boolean;
+  setActive: (active: string) => void;
+  removeItem: (id: string) => void;
+  setItems: (items: Item[]) => void;
+  items: Item[];
+  editing?: boolean;
+}
 
 let activeStyles: CSSProperties = {
   backgroundColor: "#424769",
@@ -28,26 +28,7 @@ let activeStyles: CSSProperties = {
 };
 
 const ListItem: FC<Props> = (props): JSX.Element => {
-  const [value, setValue] = useState<string>(props.item);
-
-  // useEffect(() => {
-  //   if (props.active && props.editing) {
-  //     props.setActive("");
-  //     activeStyles = {};
-  //   }
-
-  //   return () => {
-  //     activeStyles = {
-  //       backgroundColor: "#424769",
-  //       padding: "4px 10px 4px 5px",
-  //       color: "#ddd",
-  //       margin: "2px 0 5px 2px",
-  //       textAlign: "center",
-  //       borderRadius: "5px",
-  //     };
-  //   };
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [props.editing]);
+  const [value, setValue] = useState<string>(props.item.title);
 
   useEffect(() => {
     if (props.active && props.editing) {
@@ -57,20 +38,19 @@ const ListItem: FC<Props> = (props): JSX.Element => {
   }, [props.active, props.editing, props.setActive]);
 
   const handleRenameItem = (newName: string) => {
-    const prevName = props.item;
-    //  TODO : add cancel rename functionality to revert the name back to the previous one
+    const prevName = props.item.title;
     if (newName === prevName) {
       return;
     }
 
-    const index = props.items.indexOf(prevName);
+    const index = props.items.findIndex((item) => item.id === props.item.id);
     let tempItems = [...props.items];
-    tempItems[index] = newName;
+    tempItems[index].title = newName;
     props.setItems(tempItems);
   };
 
-  const handleRemoveItem = (itemToRemove: string) => {
-    const newItems = props.items.filter((item) => item !== itemToRemove);
+  const handleRemoveItem = (id: string) => {
+    const newItems = props.items.filter((item) => item.id !== id);
     props.setItems(newItems);
   };
 
@@ -83,7 +63,7 @@ const ListItem: FC<Props> = (props): JSX.Element => {
           ? () => {
               props.setActive("");
             }
-          : () => props.setActive(props.item)
+          : () => props.setActive(props.item.title)
       }
     >
       {props.editing ? (
@@ -96,7 +76,7 @@ const ListItem: FC<Props> = (props): JSX.Element => {
           maxLength={20}
         />
       ) : (
-        props.item
+        props.item.title
       )}
       {props.editing && (
         <div>
@@ -104,7 +84,7 @@ const ListItem: FC<Props> = (props): JSX.Element => {
             size={20}
             color="#db4737"
             className={stylesGlobal.icon}
-            onClick={() => handleRemoveItem(props.item)}
+            onClick={() => handleRemoveItem(props.item.id)}
           />
         </div>
       )}

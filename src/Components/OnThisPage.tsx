@@ -1,25 +1,28 @@
 import { useState } from "react";
-
+import { v4 as uuidv4 } from "uuid";
 import styles from "../Styles/Home.module.css";
 import stylesGlobal from "../Styles/Global.module.css";
-
-import { FaPlus } from "react-icons/fa6";
-
+import { FaPlus } from "react-icons/fa";
 import IndexItemGroup from "./IndexItemGroup";
-
 import data from "../mock/data";
 
 interface Component {
+  id: string;
   title: string;
-  items: { title: string }[];
-  key: number;
+  items: { id: string; title: string }[];
   editing: boolean;
   empty: boolean;
 }
 
 function OnThisPage() {
   const [activeItem, setActiveItem] = useState<string>("");
-  const [index, setIndex] = useState<Component[]>(data);
+  const [index, setIndex] = useState<Component[]>(
+    data.map((comp) => ({
+      ...comp,
+      id: uuidv4(),
+      items: comp.items.map((item) => ({ ...item, id: uuidv4() })),
+    }))
+  );
 
   const setActive = (item: string) => {
     setActiveItem(item);
@@ -27,62 +30,61 @@ function OnThisPage() {
 
   const handleRename = (
     name: string,
-    key: number,
+    id: string,
     isEmpty: boolean,
-    items?: string[]
+    items?: { id: string; title: string }[]
   ) => {
     let tempList = [...index];
-    if (isEmpty) {
-      const newComponent: Component = {
-        title: name,
-        items: [],
-        key: key,
-        editing: false,
-        empty: true,
-      };
-
-      tempList = tempList.filter((item) => item.editing === false);
-      tempList.push(newComponent);
-    } else {
-      const Component = tempList.find((item) => item.key === key);
-      if (Component) {
-        Component.items = items
-          ? items.map((item) => ({ title: item }))
-          : Component.items;
-        Component.title = name;
-        Component.editing = false;
-        tempList[key] = Component;
-      }
-      // console.log(tempList);
+    const component = tempList.find((item) => item.id === id);
+    if (component) {
+      component.items = items ? items : component.items;
+      component.title = name;
+      component.editing = false;
+      component.empty = isEmpty;
     }
     setIndex(tempList);
+    // if (isEmpty) {
+    //   const newComponent: Component = {
+    //     id: uuidv4(),
+    //     title: name,
+    //     items: [],
+    //     editing: false,
+    //     empty: isEmpty,
+    //   };
+
+    //   tempList = tempList.filter((item) => item.editing === false);
+    //   tempList.push(newComponent);
+    // } else {
+    //   const component = tempList.find((item) => item.id === id);
+    //   if (component) {
+    //     component.items = items ? items : component.items;
+    //     component.title = name;
+    //     component.editing = false;
+    //   }
+    // }
+    // setIndex(tempList);
   };
 
   const handleAddComponent = () => {
     const newComponent: Component = {
+      id: uuidv4(),
       title: "NewComp" + index.length,
       items: [],
-      key: index.length,
       editing: true,
       empty: true,
     };
 
     let tempIndex = [newComponent, ...index];
-
     setIndex(tempIndex);
   };
 
-  const handleEditComponent = (i: number) => {
-    const Component = index.find((item) => item.key === i);
-    if (Component) {
-      Component.editing = true;
+  const handleEditComponent = (id: string) => {
+    let tempList = [...index];
+    const component = tempList.find((item) => item.id === id);
+    if (component) {
+      component.editing = true;
     }
-
-    let tempIndex = [...index];
-    if (Component) {
-      tempIndex[i] = Component;
-    }
-    setIndex(tempIndex);
+    setIndex(tempList);
   };
 
   return (
@@ -97,17 +99,17 @@ function OnThisPage() {
           />
         </div>
         <div className={styles.indexItemsGroup}>
-          {index.map(({ title, items, key, editing }) => (
+          {index.map(({ id, title, items, editing }) => (
             <IndexItemGroup
+              key={id}
+              id={id}
               heading={title}
-              items={items.map((item) => item.title)}
-              key={key}
+              items={items}
               activeItem={activeItem}
               handleItemClick={setActive}
               editing={editing}
               handleRename={handleRename}
               handleEditGroup={handleEditComponent}
-              currentIndex={key}
             />
           ))}
         </div>

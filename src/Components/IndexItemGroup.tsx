@@ -1,10 +1,8 @@
 import { FC, FormEvent, KeyboardEvent, useState } from "react";
-
+import { v4 as uuidv4 } from "uuid";
 import styles from "../Styles/Home.module.css";
 import stylesGlobal from "../Styles/Global.module.css";
-
 import ListItem from "./ListItem";
-
 import { CiCirclePlus, CiEdit } from "react-icons/ci";
 import {
   IoChevronDown,
@@ -12,25 +10,30 @@ import {
   IoCheckmarkCircleOutline,
 } from "react-icons/io5";
 
+interface Item {
+  id: string;
+  title: string;
+}
+
 interface Props {
+  id: string;
   heading: string;
-  items: string[];
+  items: Item[];
   activeItem: string;
   editing?: boolean;
-  currentIndex: number;
   handleItemClick: (item: string) => void;
   handleRename: (
     name: string,
-    key: number,
+    id: string,
     isEmpty: boolean,
-    items?: string[]
+    items?: Item[]
   ) => void;
-  handleEditGroup: (i: number) => void;
+  handleEditGroup: (id: string) => void;
 }
 
 const IndexItemGroup: FC<Props> = (props): JSX.Element => {
   const [collapsed, setCollapsed] = useState<boolean>(false);
-  const [items, setItems] = useState<string[]>(props.items);
+  const [items, setItems] = useState<Item[]>(props.items);
   const [value, setValue] = useState<string>(props.heading);
 
   const handleCollapse = () => {
@@ -38,14 +41,10 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
     setItems(items.length ? [] : props.items);
   };
 
-  // 1.allow renaming the groupHeading
-  // 2.add delete and rename icons to group's items
-  // 3.replace the item with a new one at the same index with the new name or delete it and shift the rest
-
   const handleAddItem = () => {
-    const newItems = [...items, "NewItem" + items.length];
+    const newItem: Item = { id: uuidv4(), title: "NewItem" + items.length };
+    const newItems = [...items, newItem];
     setItems(newItems);
-
     handleNaming();
   };
 
@@ -59,18 +58,18 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
     }
   };
 
-  const handleRemoveItem = (item: string) => {
-    const newItems = items.filter((listItem) => listItem !== item);
+  const handleRemoveItem = (id: string) => {
+    const newItems = items.filter((listItem) => listItem.id !== id);
     setItems(newItems);
   };
 
   const handleNaming = () => {
-    props.handleRename(value, props.currentIndex, items.length === 0, items);
+    props.handleRename(value, props.id, items.length === 0, items);
   };
 
   const handleEditGroup = () => {
     if (collapsed) handleCollapse();
-    props.handleEditGroup(props.currentIndex);
+    props.handleEditGroup(props.id);
   };
 
   return (
@@ -141,10 +140,10 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
         )}
         {items.map((listItem) => (
           <ListItem
+            key={listItem.id}
             item={listItem}
-            active={listItem === props.activeItem}
+            active={listItem.title === props.activeItem}
             setActive={props.handleItemClick}
-            // if editing and the list is not empty, replace text with input and add delete and check icons to the right of the ListItem
             editing={props.editing && items.length !== 0}
             removeItem={handleRemoveItem}
             items={items}
@@ -152,7 +151,6 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
           />
         ))}
       </>
-      {/* )} */}
     </ul>
   );
 };
