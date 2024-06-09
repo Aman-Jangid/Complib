@@ -13,20 +13,25 @@ import {
 } from "react-icons/io5";
 
 interface Props {
-  heading: String;
-  items: Array<String>;
-  activeItem: String;
-  editing?: Boolean;
-  currentIndex: Number;
-  handleItemClick: Function;
-  handleRename: Function;
-  handleEditGroup: Function;
+  heading: string;
+  items: string[];
+  activeItem: string;
+  editing?: boolean;
+  currentIndex: number;
+  handleItemClick: (item: string) => void;
+  handleRename: (
+    name: string,
+    key: number,
+    isEmpty: boolean,
+    items?: string[]
+  ) => void;
+  handleEditGroup: (i: number) => void;
 }
 
 const IndexItemGroup: FC<Props> = (props): JSX.Element => {
-  const [collapsed, setCollapsed] = useState<Boolean>(false);
-  const [items, setItems] = useState<Array<String>>(props.items);
-  const [value, setValue] = useState<String>(props.heading);
+  const [collapsed, setCollapsed] = useState<boolean>(false);
+  const [items, setItems] = useState<string[]>(props.items);
+  const [value, setValue] = useState<string>(props.heading);
 
   const handleCollapse = () => {
     setCollapsed(!collapsed);
@@ -36,6 +41,13 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
   // 1.allow renaming the groupHeading
   // 2.add delete and rename icons to group's items
   // 3.replace the item with a new one at the same index with the new name or delete it and shift the rest
+
+  const handleAddItem = () => {
+    const newItems = [...items, "NewItem" + items.length];
+    setItems(newItems);
+
+    handleNaming();
+  };
 
   const handleOnChange = (e: FormEvent<HTMLInputElement>) => {
     setValue(e.currentTarget.value);
@@ -47,13 +59,18 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
     }
   };
 
-  const handleRemoveItem = (item: String) => {
+  const handleRemoveItem = (item: string) => {
     const newItems = items.filter((listItem) => listItem !== item);
     setItems(newItems);
   };
 
   const handleNaming = () => {
     props.handleRename(value, props.currentIndex, items.length === 0, items);
+  };
+
+  const handleEditGroup = () => {
+    if (collapsed) handleCollapse();
+    props.handleEditGroup(props.currentIndex);
   };
 
   return (
@@ -69,7 +86,7 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
             <div></div>
             <input
               type="text"
-              value={value.toString()}
+              value={value}
               onChange={handleOnChange}
               onKeyDown={handleEnterOnInput}
               className={styles.indexItemGroupInput}
@@ -112,12 +129,12 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
               <CiEdit
                 size={22}
                 className={stylesGlobal.icon}
-                onClick={() => props.handleEditGroup(props.currentIndex)}
+                onClick={handleEditGroup}
               />
               <CiCirclePlus
                 size={22}
                 className={stylesGlobal.icon}
-                onClick={() => {}}
+                onClick={handleAddItem}
               />
             </div>
           </h3>

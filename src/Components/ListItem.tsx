@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { CSSProperties, FC, useEffect, useState } from "react";
 
 import styles from "../Styles/Home.module.css";
 import stylesGlobal from "../Styles/Global.module.css";
@@ -6,19 +6,19 @@ import stylesGlobal from "../Styles/Global.module.css";
 import { IoRemoveCircleOutline } from "react-icons/io5";
 
 interface Props {
-  item: String;
-  active: Boolean;
-  setActive: Function;
-  removeItem: Function;
-  setItems: Function;
-  items: Array<String>;
-  editing?: Boolean;
+  item: string;
+  active: boolean;
+  setActive: (active: string) => void;
+  removeItem: (item: string) => void;
+  setItems: (items: string[]) => void;
+  items: string[];
+  editing?: boolean;
 }
 
 // the links should be able to jump through sections in ContentArea
 // TODO : Also receive the current category/list
 
-let activeStyles: Object = {
+let activeStyles: CSSProperties = {
   backgroundColor: "#424769",
   padding: "4px 10px 4px 5px",
   color: "#ddd",
@@ -28,26 +28,33 @@ let activeStyles: Object = {
 };
 
 const ListItem: FC<Props> = (props): JSX.Element => {
-  const [value, setValue] = useState<String>(props.item);
+  const [value, setValue] = useState<string>(props.item);
+
+  // useEffect(() => {
+  //   if (props.active && props.editing) {
+  //     props.setActive("");
+  //     activeStyles = {};
+  //   }
+
+  //   return () => {
+  //     activeStyles = {
+  //       backgroundColor: "#424769",
+  //       padding: "4px 10px 4px 5px",
+  //       color: "#ddd",
+  //       margin: "2px 0 5px 2px",
+  //       textAlign: "center",
+  //       borderRadius: "5px",
+  //     };
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [props.editing]);
 
   useEffect(() => {
     if (props.active && props.editing) {
-      props.setActive(false);
-      activeStyles = {};
+      props.setActive("");
     }
-
-    return () => {
-      activeStyles = {
-        backgroundColor: "#424769",
-        padding: "4px 10px 4px 5px",
-        color: "#ddd",
-        margin: "2px 0 5px 2px",
-        textAlign: "center",
-        borderRadius: "5px",
-      };
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.editing]);
+  }, [props.active, props.editing, props.setActive]);
 
   const handleRenameItem = (newName: string) => {
     const prevName = props.item;
@@ -62,6 +69,11 @@ const ListItem: FC<Props> = (props): JSX.Element => {
     props.setItems(tempItems);
   };
 
+  const handleRemoveItem = (itemToRemove: string) => {
+    const newItems = props.items.filter((item) => item !== itemToRemove);
+    props.setItems(newItems);
+  };
+
   return (
     <ul
       className={styles.listItem}
@@ -69,7 +81,7 @@ const ListItem: FC<Props> = (props): JSX.Element => {
       onClick={
         props.editing
           ? () => {
-              props.setActive(false);
+              props.setActive("");
             }
           : () => props.setActive(props.item)
       }
@@ -77,9 +89,9 @@ const ListItem: FC<Props> = (props): JSX.Element => {
       {props.editing ? (
         <input
           type="text"
-          value={value.toString()}
+          value={value}
           onChange={(e) => setValue(e.target.value)}
-          onBlur={() => handleRenameItem(value.toString())}
+          onBlur={() => handleRenameItem(value)}
           className={styles.listItemInput}
           maxLength={20}
         />
@@ -92,7 +104,7 @@ const ListItem: FC<Props> = (props): JSX.Element => {
             size={20}
             color="#db4737"
             className={stylesGlobal.icon}
-            onClick={() => props.removeItem(props.item)}
+            onClick={() => handleRemoveItem(props.item)}
           />
         </div>
       )}

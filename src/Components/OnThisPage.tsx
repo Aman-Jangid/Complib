@@ -9,11 +9,19 @@ import IndexItemGroup from "./IndexItemGroup";
 
 import data from "../mock/data";
 
-function OnThisPage() {
-  const [activeItem, setActiveItem] = useState<String>("");
-  const [index, setIndex] = useState(data);
+interface Component {
+  title: string;
+  items: { title: string }[];
+  key: number;
+  editing: boolean;
+  empty: boolean;
+}
 
-  const setActive = (item: String) => {
+function OnThisPage() {
+  const [activeItem, setActiveItem] = useState<string>("");
+  const [index, setIndex] = useState<Component[]>(data);
+
+  const setActive = (item: string) => {
     setActiveItem(item);
   };
 
@@ -21,11 +29,11 @@ function OnThisPage() {
     name: string,
     key: number,
     isEmpty: boolean,
-    items?: Array<String>
+    items?: string[]
   ) => {
     let tempList = [...index];
     if (isEmpty) {
-      const newComponent = {
+      const newComponent: Component = {
         title: name,
         items: [],
         key: key,
@@ -38,18 +46,20 @@ function OnThisPage() {
     } else {
       const Component = tempList.find((item) => item.key === key);
       if (Component) {
-        Component.items = items ? items : Component.items;
+        Component.items = items
+          ? items.map((item) => ({ title: item }))
+          : Component.items;
         Component.title = name;
         Component.editing = false;
         tempList[key] = Component;
       }
-      console.log(tempList);
+      // console.log(tempList);
     }
     setIndex(tempList);
   };
 
   const handleAddComponent = () => {
-    const newComponent = {
+    const newComponent: Component = {
       title: "NewComp" + index.length,
       items: [],
       key: index.length,
@@ -87,17 +97,17 @@ function OnThisPage() {
           />
         </div>
         <div className={styles.indexItemsGroup}>
-          {index.map((group) => (
+          {index.map(({ title, items, key, editing }) => (
             <IndexItemGroup
-              heading={group.title}
-              items={group.items.map((item) => item.title)}
-              key={group.key}
+              heading={title}
+              items={items.map((item) => item.title)}
+              key={key}
               activeItem={activeItem}
               handleItemClick={setActive}
-              editing={group.editing}
+              editing={editing}
               handleRename={handleRename}
               handleEditGroup={handleEditComponent}
-              currentIndex={group.key}
+              currentIndex={key}
             />
           ))}
         </div>
