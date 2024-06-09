@@ -19,9 +19,9 @@ interface Props {
   id: string;
   heading: string;
   items: Item[];
-  activeItem: string;
+  activeItemId: string;
   editing?: boolean;
-  handleItemClick: (item: string) => void;
+  handleItemClick: (id: string) => void;
   handleRename: (
     name: string,
     id: string,
@@ -45,7 +45,7 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
     const newItem: Item = { id: uuidv4(), title: "NewItem" + items.length };
     const newItems = [...items, newItem];
     setItems(newItems);
-    handleNaming();
+    handleNaming(newItems);
   };
 
   const handleOnChange = (e: FormEvent<HTMLInputElement>) => {
@@ -54,17 +54,24 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
 
   const handleEnterOnInput = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      handleNaming();
+      handleNaming(items);
     }
   };
 
   const handleRemoveItem = (id: string) => {
     const newItems = items.filter((listItem) => listItem.id !== id);
     setItems(newItems);
+    handleNaming(newItems);
   };
 
-  const handleNaming = () => {
-    props.handleRename(value, props.id, items.length === 0, items);
+  const handleNaming = (newItems?: Item[]) => {
+    const updatedItems = newItems || items;
+    props.handleRename(
+      value,
+      props.id,
+      updatedItems.length === 0,
+      updatedItems
+    );
   };
 
   const handleEditGroup = () => {
@@ -95,7 +102,7 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
             <IoCheckmarkCircleOutline
               size={24}
               color="#7077a1"
-              onClick={handleNaming}
+              onClick={() => handleNaming(items)}
               className={stylesGlobal.icon}
             />
           </div>
@@ -142,7 +149,7 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
           <ListItem
             key={listItem.id}
             item={listItem}
-            active={listItem.title === props.activeItem}
+            active={listItem.id === props.activeItemId}
             setActive={props.handleItemClick}
             editing={props.editing && items.length !== 0}
             removeItem={handleRemoveItem}

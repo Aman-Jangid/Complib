@@ -3,19 +3,18 @@ import styles from "../Styles/Global.module.css";
 
 interface Props {
   modifierKey: string;
-  // letters and symbols to be exact
-  SymbolKey: string;
+  symbolKey: string;
+  function: () => void;
 }
 
-// takes at most three arguments modifierKey1,modifierKey2,letter_key
 const Shortcut: FC<Props> = (props): JSX.Element => {
   const keyElement = (key: String) => <div className={styles.key}>{key}</div>;
 
   const handleShortcut = (event: KeyboardEvent) => {
     const isModifierKeyPressed = (event as any)[props.modifierKey];
-    if (isModifierKeyPressed && event.key === props.SymbolKey) {
+    if (isModifierKeyPressed && event.key === props.symbolKey) {
       event.preventDefault();
-      console.log(props.modifierKey + props.SymbolKey + " was pressed!");
+      props.function();
     }
   };
 
@@ -30,7 +29,7 @@ const Shortcut: FC<Props> = (props): JSX.Element => {
   return (
     <div className={styles.shortcut}>
       {props.modifierKey && keyElement(props.modifierKey.replace("Key", ""))}
-      {props.SymbolKey && keyElement(props.SymbolKey)}
+      {props.symbolKey && keyElement(props.symbolKey)}
     </div>
   );
 };

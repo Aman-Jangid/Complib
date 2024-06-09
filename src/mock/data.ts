@@ -120,6 +120,7 @@ const data = [
     key: uuidv4(),
     editing: false,
     empty: false,
+    timeCreated: new Date(),
   },
   {
     title: "Cards",
@@ -182,6 +183,7 @@ const data = [
     key: uuidv4(),
     editing: false,
     empty: false,
+    timeCreated: new Date(),
   },
   {
     title: "Navigation",
@@ -215,6 +217,7 @@ const data = [
     key: uuidv4(),
     editing: false,
     empty: false,
+    timeCreated: new Date(),
   },
   {
     title: "Carousels",
@@ -259,6 +262,7 @@ const data = [
     key: uuidv4(),
     editing: false,
     empty: false,
+    timeCreated: new Date(),
   },
 ];
 
@@ -283,6 +287,7 @@ interface Data {
   items: Item[];
   editing: boolean;
   empty: boolean;
+  timeCreated: Date;
 }
 
 // export interfaces

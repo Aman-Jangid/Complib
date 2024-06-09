@@ -63,7 +63,7 @@ const ListItem: FC<Props> = (props): JSX.Element => {
           ? () => {
               props.setActive("");
             }
-          : () => props.setActive(props.item.title)
+          : () => props.setActive(props.item.id)
       }
     >
       {props.editing ? (

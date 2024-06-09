@@ -2,7 +2,7 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import styles from "../Styles/Home.module.css";
 import stylesGlobal from "../Styles/Global.module.css";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa6";
 import IndexItemGroup from "./IndexItemGroup";
 import data from "../mock/data";
 
@@ -12,10 +12,11 @@ interface Component {
   items: { id: string; title: string }[];
   editing: boolean;
   empty: boolean;
+  timeCreated: Date;
 }
 
 function OnThisPage() {
-  const [activeItem, setActiveItem] = useState<string>("");
+  const [activeItemId, setActiveItemId] = useState<string>("");
   const [index, setIndex] = useState<Component[]>(
     data.map((comp) => ({
       ...comp,
@@ -24,8 +25,8 @@ function OnThisPage() {
     }))
   );
 
-  const setActive = (item: string) => {
-    setActiveItem(item);
+  const setActive = (id: string) => {
+    setActiveItemId(id);
   };
 
   const handleRename = (
@@ -41,28 +42,9 @@ function OnThisPage() {
       component.title = name;
       component.editing = false;
       component.empty = isEmpty;
+      component.timeCreated = new Date();
     }
     setIndex(tempList);
-    // if (isEmpty) {
-    //   const newComponent: Component = {
-    //     id: uuidv4(),
-    //     title: name,
-    //     items: [],
-    //     editing: false,
-    //     empty: isEmpty,
-    //   };
-
-    //   tempList = tempList.filter((item) => item.editing === false);
-    //   tempList.push(newComponent);
-    // } else {
-    //   const component = tempList.find((item) => item.id === id);
-    //   if (component) {
-    //     component.items = items ? items : component.items;
-    //     component.title = name;
-    //     component.editing = false;
-    //   }
-    // }
-    // setIndex(tempList);
   };
 
   const handleAddComponent = () => {
@@ -72,6 +54,7 @@ function OnThisPage() {
       items: [],
       editing: true,
       empty: true,
+      timeCreated: new Date(),
     };
 
     let tempIndex = [newComponent, ...index];
@@ -105,7 +88,7 @@ function OnThisPage() {
               id={id}
               heading={title}
               items={items}
-              activeItem={activeItem}
+              activeItemId={activeItemId}
               handleItemClick={setActive}
               editing={editing}
               handleRename={handleRename}

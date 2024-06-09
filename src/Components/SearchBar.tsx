@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, useRef, useState } from "react";
 import styles from "../Styles/Home.module.css";
 import Shortcut from "./Shortcut";
 
@@ -12,6 +12,8 @@ interface Props {
 const SearchBar: FC<Props> = (props): JSX.Element => {
   const [focused, setFocused] = useState<boolean>(false);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     props.setValue(event.target.value);
   };
@@ -20,7 +22,7 @@ const SearchBar: FC<Props> = (props): JSX.Element => {
     <div
       className={styles.searchBar}
       style={{
-        outline: focused ? "2px solid #35384b" : "none",
+        outline: focused ? "3px solid #7077a1" : "none",
       }}
     >
       <div>
@@ -34,10 +36,17 @@ const SearchBar: FC<Props> = (props): JSX.Element => {
           onChange={(e) => handleInputChange(e)}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
+          ref={inputRef}
         />
       </div>
       <div>
-        <Shortcut modifierKey="ctrlKey" SymbolKey="k" />
+        <Shortcut
+          modifierKey="ctrlKey"
+          symbolKey="k"
+          function={() =>
+            focused ? inputRef.current?.blur() : inputRef.current?.focus()
+          }
+        />
       </div>
     </div>
   );
