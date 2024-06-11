@@ -3,11 +3,15 @@ import React, { createContext, useEffect, useState } from "react";
 interface GlobalContextProps {
   category: string;
   setCategory: (category: string) => void;
+  componentType: string;
+  setComponentType: (componentType: string) => void;
 }
 
 const GlobalContext = createContext<GlobalContextProps>({
   category: "React",
   setCategory: () => {},
+  componentType: "Functional",
+  setComponentType: () => {},
 });
 
 interface GlobalProviderProps {
@@ -16,6 +20,7 @@ interface GlobalProviderProps {
 
 const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
   const [category, setCategory] = useState<string>("React");
+  const [componentType, setComponentType] = useState<string>("Functional");
 
   // get category from local storage
   useEffect(() => {
@@ -32,7 +37,9 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
   }, [category]);
 
   return (
-    <GlobalContext.Provider value={{ category, setCategory }}>
+    <GlobalContext.Provider
+      value={{ category, setCategory, componentType, setComponentType }}
+    >
       {children}
     </GlobalContext.Provider>
   );

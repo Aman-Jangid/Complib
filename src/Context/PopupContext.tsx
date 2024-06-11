@@ -1,0 +1,68 @@
+// a popup context
+
+import React, { createContext, useContext, useState } from "react";
+import { createPortal } from "react-dom";
+import { IoIosCloseCircleOutline } from "react-icons/io";
+
+import globalStyles from "../Styles/Global.module.css";
+
+interface PopupContextProps {
+  showPopup: boolean;
+  setShowPopup: (showPopup: boolean) => void;
+}
+
+const PopupContext = createContext<PopupContextProps>({
+  showPopup: false,
+  setShowPopup: () => {},
+});
+
+interface PopupProviderProps {
+  children: React.ReactNode;
+}
+
+const PopupProvider: React.FC<PopupProviderProps> = ({ children }) => {
+  const [showPopup, setShowPopup] = useState<boolean>(false);
+
+  return (
+    <PopupContext.Provider value={{ showPopup, setShowPopup }}>
+      {children}
+    </PopupContext.Provider>
+  );
+};
+
+interface PopupProps {
+  children: JSX.Element;
+}
+
+const PopUp: React.FC<PopupProps> = ({ children }) => {
+  const { showPopup, setShowPopup } = useContext(PopupContext);
+
+  const closePopup = () => {
+    setShowPopup(false);
+  };
+
+  return createPortal(
+    <>
+      {showPopup && (
+        <div className={globalStyles.popupBackground}>
+          <div>
+            <div className={globalStyles.popup}>
+              <div style={{ position: "absolute", top: "5px", right: "5px" }}>
+                <IoIosCloseCircleOutline
+                  onClick={closePopup}
+                  color="#d87871"
+                  size={22}
+                  className={globalStyles.icon}
+                />
+              </div>
+              {children}
+            </div>
+          </div>
+        </div>
+      )}
+    </>,
+    document.body
+  );
+};
+
+export { PopupProvider, PopupContext, PopUp };

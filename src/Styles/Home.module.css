@@ -215,6 +215,7 @@
   text-align: start;
   height: 100%;
   overflow: scroll;
+  overflow-x: hidden;
   /* scrollbar-width: none; */
 }
 
@@ -241,7 +242,7 @@
   align-items: center;
   justify-content: space-around;
   margin: 0 2rem 1rem 0.5rem;
-  color: #ddd;
+  color: #acb1d1;
 }
 
 .indexItemGroup {

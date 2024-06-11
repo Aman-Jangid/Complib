@@ -6,8 +6,8 @@ import ListItem from "./ListItem";
 import { CiCirclePlus, CiEdit } from "react-icons/ci";
 import {
   IoChevronDown,
-  IoChevronForward,
   IoCheckmarkCircleOutline,
+  IoTrashBinOutline,
 } from "react-icons/io5";
 
 interface Item {
@@ -29,6 +29,7 @@ interface Props {
     items?: Item[]
   ) => void;
   handleEditGroup: (id: string) => void;
+  handleDeleteGroup: (id: string) => void;
 }
 
 const IndexItemGroup: FC<Props> = (props): JSX.Element => {
@@ -79,6 +80,10 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
     props.handleEditGroup(props.id);
   };
 
+  const handleDeleteGroup = () => {
+    props.handleDeleteGroup(props.id);
+  };
+
   return (
     <ul className={styles.indexItemGroup}>
       <>
@@ -86,10 +91,16 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "12% 73% 15%",
+              gridTemplateColumns: "15% auto 15%",
             }}
           >
-            <div></div>
+            <IoTrashBinOutline
+              size={22}
+              color="#7077a1"
+              className={stylesGlobal.icon}
+              style={{ transform: "translate(-105%)" }}
+              onClick={handleDeleteGroup}
+            />
             <input
               type="text"
               value={value}
@@ -97,6 +108,7 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
               onKeyDown={handleEnterOnInput}
               className={styles.indexItemGroupInput}
               maxLength={12}
+              style={{ width: "100%" }}
               autoFocus
             />
             <IoCheckmarkCircleOutline
@@ -111,26 +123,26 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
             style={{
               color: "#7077a1",
               display: "flex",
-              alignItems: "center",
+              alignItems: "start",
+              textAlign: "start",
               justifyContent: "space-between",
               margin: "0 10px 10px -1.5rem",
+              cursor: "pointer",
             }}
           >
-            {collapsed ? (
-              <IoChevronForward
-                size={22}
-                onClick={handleCollapse}
-                className={stylesGlobal.icon}
-              />
-            ) : (
+            <div
+              style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+            >
               <IoChevronDown
                 size={22}
                 onClick={handleCollapse}
                 className={stylesGlobal.icon}
+                style={{
+                  transform: collapsed ? "rotate(-90deg)" : "rotate(0deg)",
+                }}
               />
-            )}
-
-            <div onClick={handleCollapse}>{props.heading}</div>
+              <div onClick={handleCollapse}>{props.heading}</div>
+            </div>
             <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
               <CiEdit
                 size={22}

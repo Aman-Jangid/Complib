@@ -1,10 +1,17 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { FaPlus } from "react-icons/fa6";
+
 import { v4 as uuidv4 } from "uuid";
+
 import styles from "../Styles/Home.module.css";
 import stylesGlobal from "../Styles/Global.module.css";
-import { FaPlus } from "react-icons/fa6";
+
+import { GlobalContext } from "../Context/GlobalContext";
+
 import IndexItemGroup from "./IndexItemGroup";
+
 import data from "../mock/data";
+import DeletePopUp from "./DeletePopUp";
 
 interface Component {
   id: string;
@@ -25,8 +32,20 @@ function OnThisPage() {
     }))
   );
 
+  // context
+  const { setComponentType } = useContext(GlobalContext);
+
   const setActive = (id: string) => {
     setActiveItemId(id);
+
+    // find the title of the active item using id
+    const activeItem = index
+      .map((comp) => comp.items.find((item) => item.id === id))
+      .find((item) => item);
+
+    if (activeItem) {
+      setComponentType(activeItem.title);
+    }
   };
 
   const handleRename = (
@@ -35,6 +54,7 @@ function OnThisPage() {
     isEmpty: boolean,
     items?: { id: string; title: string }[]
   ) => {
+    if (!name) return;
     let tempList = [...index];
     const component = tempList.find((item) => item.id === id);
     if (component) {
@@ -70,8 +90,22 @@ function OnThisPage() {
     setIndex(tempList);
   };
 
+  const handleDeleteComponent = (id: string) => {
+    let tempList = [...index];
+    const newItems = tempList.filter((item) => item.id !== id);
+    setIndex(newItems);
+  };
+
+  useEffect(() => {
+    const id = index[0].items[0].id;
+    setActive(id);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className={styles.onThisPage}>
+      <DeletePopUp />
       <ul>
         <div className={styles.indexHeading}>
           <h3 className={styles.indexHeadingText}>Components</h3>
@@ -93,6 +127,7 @@ function OnThisPage() {
               editing={editing}
               handleRename={handleRename}
               handleEditGroup={handleEditComponent}
+              handleDeleteGroup={handleDeleteComponent}
             />
           ))}
         </div>

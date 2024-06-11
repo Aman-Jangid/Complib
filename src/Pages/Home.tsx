@@ -1,10 +1,17 @@
+import { useContext } from "react";
+
+import styles from "../Styles/Home.module.css";
+
 import ContentArea from "../Components/ContentArea";
 import Header from "../Components/Header";
 import OnThisPage from "../Components/OnThisPage";
 import Sidebar from "../Components/Sidebar";
-import styles from "../Styles/Home.module.css";
+
+import { GlobalContext } from "../Context/GlobalContext";
 
 function Home() {
+  const { componentType } = useContext(GlobalContext);
+
   return (
     <div className={styles.home}>
       <div>
@@ -14,7 +21,7 @@ function Home() {
         <div className={styles.onThisPageSection}>
           <OnThisPage />
         </div>
-        <ContentArea />
+        <ContentArea heading={componentType} />
         <div className={styles.sidebarSection}>
           <Sidebar />
         </div>
