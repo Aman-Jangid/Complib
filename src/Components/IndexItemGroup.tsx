@@ -1,14 +1,18 @@
-import { FC, FormEvent, KeyboardEvent, useState } from "react";
+import { FC, FormEvent, KeyboardEvent, useState, useContext } from "react";
 import { v4 as uuidv4 } from "uuid";
-import styles from "../Styles/Home.module.css";
-import stylesGlobal from "../Styles/Global.module.css";
-import ListItem from "./ListItem";
 import { CiCirclePlus, CiEdit } from "react-icons/ci";
 import {
   IoChevronDown,
   IoCheckmarkCircleOutline,
   IoTrashBinOutline,
 } from "react-icons/io5";
+
+import styles from "../Styles/Home.module.css";
+import stylesGlobal from "../Styles/Global.module.css";
+
+import ListItem from "./ListItem";
+
+import { PopupContext } from "../Context/PopupContext";
 
 interface Item {
   id: string;
@@ -36,6 +40,8 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const [items, setItems] = useState<Item[]>(props.items);
   const [value, setValue] = useState<string>(props.heading);
+
+  const { setShowPopup, setComponentIdToDelete } = useContext(PopupContext);
 
   const handleCollapse = () => {
     setCollapsed(!collapsed);
@@ -81,19 +87,15 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
   };
 
   const handleDeleteGroup = () => {
-    props.handleDeleteGroup(props.id);
+    setComponentIdToDelete(props.id, props.heading);
+    setShowPopup(true);
   };
 
   return (
     <ul className={styles.indexItemGroup}>
       <>
         {props.editing ? (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "15% auto 15%",
-            }}
-          >
+          <div style={{ display: "grid", gridTemplateColumns: "15% auto 15%" }}>
             <IoTrashBinOutline
               size={22}
               color="#7077a1"

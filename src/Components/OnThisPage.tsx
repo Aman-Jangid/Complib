@@ -1,17 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
-
 import { v4 as uuidv4 } from "uuid";
 
 import styles from "../Styles/Home.module.css";
 import stylesGlobal from "../Styles/Global.module.css";
 
+import IndexItemGroup from "./IndexItemGroup";
+import DeletePopUp from "./DeletePopUp";
+
 import { GlobalContext } from "../Context/GlobalContext";
 
-import IndexItemGroup from "./IndexItemGroup";
-
 import data from "../mock/data";
-import DeletePopUp from "./DeletePopUp";
 
 interface Component {
   id: string;
@@ -32,13 +31,11 @@ function OnThisPage() {
     }))
   );
 
-  // context
   const { setComponentType } = useContext(GlobalContext);
 
   const setActive = (id: string) => {
     setActiveItemId(id);
 
-    // find the title of the active item using id
     const activeItem = index
       .map((comp) => comp.items.find((item) => item.id === id))
       .find((item) => item);
@@ -99,13 +96,12 @@ function OnThisPage() {
   useEffect(() => {
     const id = index[0].items[0].id;
     setActive(id);
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div className={styles.onThisPage}>
-      <DeletePopUp />
+      <DeletePopUp handleDeleteComponent={handleDeleteComponent} />
       <ul>
         <div className={styles.indexHeading}>
           <h3 className={styles.indexHeadingText}>Components</h3>

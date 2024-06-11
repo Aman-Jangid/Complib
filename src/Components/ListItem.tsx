@@ -1,7 +1,12 @@
 import React, { CSSProperties, FC, useEffect, useState } from "react";
+import {
+  IoRemoveCircleOutline,
+  IoTrashSharp,
+  IoCloseSharp,
+} from "react-icons/io5";
+
 import styles from "../Styles/Home.module.css";
 import stylesGlobal from "../Styles/Global.module.css";
-import { IoRemoveCircleOutline } from "react-icons/io5";
 
 interface Item {
   id: string;
@@ -29,10 +34,16 @@ let activeStyles: CSSProperties = {
 
 const ListItem: FC<Props> = (props): JSX.Element => {
   const [value, setValue] = useState<string>(props.item.title);
+  const [confirmRemove, setConfirmRemove] = useState<boolean>(false);
+  const [showDelete, setShowDelete] = useState<boolean>(true);
 
   useEffect(() => {
     if (props.active && props.editing) {
       props.setActive("");
+    }
+
+    if (!props.editing) {
+      setConfirmRemove(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.active, props.editing, props.setActive]);
@@ -54,41 +65,110 @@ const ListItem: FC<Props> = (props): JSX.Element => {
     props.setItems(newItems);
   };
 
+  const handleConfirmRemove = () => {
+    setConfirmRemove(true);
+  };
+
   return (
-    <ul
-      className={styles.listItem}
-      style={props.active ? activeStyles : {}}
-      onClick={
-        props.editing
-          ? () => {
-              props.setActive("");
-            }
-          : () => props.setActive(props.item.id)
-      }
-    >
-      {props.editing ? (
-        <input
-          type="text"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          onBlur={() => handleRenameItem(value)}
-          className={styles.listItemInput}
-          maxLength={20}
-        />
-      ) : (
-        props.item.title
-      )}
-      {props.editing && (
-        <div>
-          <IoRemoveCircleOutline
-            size={20}
-            color="#db4737"
-            className={stylesGlobal.icon}
-            onClick={() => handleRemoveItem(props.item.id)}
-          />
+    <>
+      {props.editing && confirmRemove ? (
+        <div
+          className={stylesGlobal.deleteItemConfirmLabel}
+          onMouseOver={() => {
+            setShowDelete(false);
+          }}
+          onMouseLeave={() => {
+            setShowDelete(true);
+          }}
+        >
+          <div>
+            <span
+              style={{
+                color: "#ccc",
+                fontWeight: "bold",
+                overflow: "hidden",
+                display: "inline-block",
+                marginRight: "3px",
+              }}
+            >
+              {showDelete ? "Delete " : ""}
+            </span>
+
+            <span
+              style={{
+                color: "#e07965",
+                fontWeight: "bold",
+                overflow: showDelete ? "hidden" : "unset",
+                whiteSpace: showDelete ? "nowrap" : "none",
+                textOverflow: showDelete ? "ellipsis" : "unset",
+                maxWidth: "100px", // Adjust as needed
+                display: "inline-block",
+              }}
+            >
+              {props.item.title}?&nbsp;
+            </span>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "5px",
+            }}
+          >
+            <button
+              className={stylesGlobal.deletePopupNoButton}
+              style={{ padding: "4px 5px" }}
+              onClick={() => handleRemoveItem(props.item.id)}
+            >
+              <IoTrashSharp size={16} color="#fff" />
+            </button>
+            <button
+              className={stylesGlobal.deletePopupYesButton}
+              style={{ padding: "4px 5px" }}
+              onClick={() => setConfirmRemove(false)}
+            >
+              <IoCloseSharp size={16} color="#fff" />
+            </button>
+          </div>
         </div>
+      ) : (
+        <ul
+          className={styles.listItem}
+          style={props.active ? activeStyles : {}}
+          onClick={
+            props.editing
+              ? () => {
+                  props.setActive("");
+                }
+              : () => props.setActive(props.item.id)
+          }
+        >
+          {props.editing ? (
+            <input
+              type="text"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              onBlur={() => handleRenameItem(value)}
+              className={styles.listItemInput}
+              maxLength={20}
+            />
+          ) : (
+            props.item.title
+          )}
+          {props.editing && (
+            <div>
+              <IoRemoveCircleOutline
+                size={20}
+                color="#db4737"
+                className={stylesGlobal.icon}
+                // onClick={() => handleRemoveItem(props.item.id)}
+                onClick={handleConfirmRemove}
+              />
+            </div>
+          )}
+        </ul>
       )}
-    </ul>
+    </>
   );
 };
 

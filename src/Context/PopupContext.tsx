@@ -1,19 +1,20 @@
-// a popup context
-
 import React, { createContext, useContext, useState } from "react";
 import { createPortal } from "react-dom";
 import { IoIosCloseCircleOutline } from "react-icons/io";
-
 import globalStyles from "../Styles/Global.module.css";
 
 interface PopupContextProps {
   showPopup: boolean;
   setShowPopup: (showPopup: boolean) => void;
+  componentIdToDelete: string | null;
+  setComponentIdToDelete: (id: string | null, title: string | null) => void;
 }
 
 const PopupContext = createContext<PopupContextProps>({
   showPopup: false,
   setShowPopup: () => {},
+  componentIdToDelete: null,
+  setComponentIdToDelete: () => {},
 });
 
 interface PopupProviderProps {
@@ -22,9 +23,19 @@ interface PopupProviderProps {
 
 const PopupProvider: React.FC<PopupProviderProps> = ({ children }) => {
   const [showPopup, setShowPopup] = useState<boolean>(false);
+  const [componentIdToDelete, setComponentIdToDelete] = useState<string | null>(
+    null
+  );
 
   return (
-    <PopupContext.Provider value={{ showPopup, setShowPopup }}>
+    <PopupContext.Provider
+      value={{
+        showPopup,
+        setShowPopup,
+        componentIdToDelete,
+        setComponentIdToDelete,
+      }}
+    >
       {children}
     </PopupContext.Provider>
   );
