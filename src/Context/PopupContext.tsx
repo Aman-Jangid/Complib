@@ -7,7 +7,9 @@ interface PopupContextProps {
   showPopup: boolean;
   setShowPopup: (showPopup: boolean) => void;
   componentIdToDelete: string | null;
-  setComponentIdToDelete: (id: string | null, title: string | null) => void;
+  setComponentIdToDelete: (id: string | null) => void;
+  componentTitleToDelete: string | null;
+  setComponentTitleToDelete: (title: string | null) => void;
 }
 
 const PopupContext = createContext<PopupContextProps>({
@@ -15,6 +17,8 @@ const PopupContext = createContext<PopupContextProps>({
   setShowPopup: () => {},
   componentIdToDelete: null,
   setComponentIdToDelete: () => {},
+  componentTitleToDelete: null,
+  setComponentTitleToDelete: () => {},
 });
 
 interface PopupProviderProps {
@@ -26,6 +30,9 @@ const PopupProvider: React.FC<PopupProviderProps> = ({ children }) => {
   const [componentIdToDelete, setComponentIdToDelete] = useState<string | null>(
     null
   );
+  const [componentTitleToDelete, setComponentTitleToDelete] = useState<
+    string | null
+  >(null);
 
   return (
     <PopupContext.Provider
@@ -34,6 +41,8 @@ const PopupProvider: React.FC<PopupProviderProps> = ({ children }) => {
         setShowPopup,
         componentIdToDelete,
         setComponentIdToDelete,
+        componentTitleToDelete,
+        setComponentTitleToDelete,
       }}
     >
       {children}

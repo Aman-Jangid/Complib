@@ -9,11 +9,13 @@ import SearchBar from "./SearchBar";
 import UserDropdown from "./UserDropdown";
 import DropdownPanel from "./DropdownPanel";
 import IconButton from "./IconButton";
+import DropdownPage from "./DropdownPage";
 
 function Header() {
   const [query, setQuery] = useState<string>("");
   const [theme, setTheme] = useState<string>("dark");
   const [showDropdownPanel, setShowDropdownPanel] = useState<boolean>(false);
+  const [inSettings, setInSettings] = useState<boolean>(false);
 
   // replace with context method
   const toggleTheme = () => {
@@ -69,72 +71,64 @@ function Header() {
       </div>
       {showDropdownPanel && (
         <DropdownPanel>
-          <div
-            style={{
-              height: "30px",
-              width: "100%",
-              paddingLeft: "2rem",
-              display: "flex",
-              textAlign: "start",
-              alignItems: "center",
-              gap: "0.5rem",
-              color: "white",
-              paddingBottom: "5px",
-              borderBottom: "1px solid #7077a1",
-              marginBottom: "5px",
-            }}
-          >
-            <h3 style={{ margin: 0, padding: 0 }}>John Doe</h3>
-            <h5 style={{ margin: 0, padding: 0, color: "#bbb" }}>@username</h5>
-          </div>
-          <IconButton
-            active={false}
-            backgroundColor="rgba(0, 0, 0, 0.1)"
-            color="white"
-            width="100%"
-            iconSize={20}
-            height="30px"
-            iconPack="md"
-            iconName="MdOutlineAccountCircle"
-            text="Account"
-            textColor="white"
-            key={-1}
-            onClick={() => {
-              console.log("aaaaaaa");
-            }}
-          />
-          <IconButton
-            active={false}
-            backgroundColor="rgba(0, 0, 0, 0.1)"
-            color="white"
-            width="100%"
-            iconSize={20}
-            height="30px"
-            iconPack="md"
-            iconName="MdOutlineSettings"
-            text="Settings"
-            textColor="white"
-            key={-1}
-            onClick={() => {
-              console.log("aaaaaaa");
-            }}
-          />
-          <IconButton
-            active={false}
-            backgroundColor="rgba(0, 0, 0, 0.1)"
-            color="white"
-            width="100%"
-            iconSize={20}
-            height="30px"
-            iconPack="md"
-            iconName="MdLogout"
-            text="Logout"
-            textColor="white"
-            key={-1}
-            onClick={() => {
-              console.log("aaaaaaa");
-            }}
-          />
+          {inSettings ? (
+            <DropdownPage goBack={() => setInSettings(false)} />
+          ) : (
+            <>
+              <div className={styles.userInfo}>
+                <h3 style={{ margin: 0, padding: 0 }}>John Doe</h3>
+                <h5 style={{ margin: 0, padding: 0, color: "#bbb" }}>
+                  @username
+                </h5>
+              </div>
+              <IconButton
+                active={false}
+                backgroundColor="rgba(0, 0, 0, 0.1)"
+                color="white"
+                width="100%"
+                iconSize={20}
+                height="30px"
+                iconPack="md"
+                iconName="MdOutlineAccountCircle"
+                text="Account"
+                textColor="white"
+                key={-1}
+                onClick={() => {
+                  console.log("aaaaaaa");
+                }}
+              />
+              <IconButton
+                active={false}
+                backgroundColor="rgba(0, 0, 0, 0.1)"
+                color="white"
+                width="100%"
+                iconSize={20}
+                height="30px"
+                iconPack="md"
+                iconName="MdOutlineSettings"
+                text="Settings"
+                textColor="white"
+                key={-1}
+                onClick={() => setInSettings(true)}
+              />
+              <IconButton
+                active={false}
+                backgroundColor="rgba(0, 0, 0, 0.1)"
+                color="white"
+                width="100%"
+                iconSize={20}
+                height="30px"
+                iconPack="md"
+                iconName="MdLogout"
+                text="Logout"
+                textColor="white"
+                key={-1}
+                onClick={() => {
+                  console.log("aaaaaaa");
+                }}
+              />
+            </>
+          )}
         </DropdownPanel>
       )}
     </header>

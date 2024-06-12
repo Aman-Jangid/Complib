@@ -152,3 +152,16 @@
   margin: 3px 0;
   transition: all 0.3s;
 }
+
+.backButton {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #7077a1;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}

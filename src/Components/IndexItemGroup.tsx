@@ -41,7 +41,8 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
   const [items, setItems] = useState<Item[]>(props.items);
   const [value, setValue] = useState<string>(props.heading);
 
-  const { setShowPopup, setComponentIdToDelete } = useContext(PopupContext);
+  const { setShowPopup, setComponentIdToDelete, setComponentTitleToDelete } =
+    useContext(PopupContext);
 
   const handleCollapse = () => {
     setCollapsed(!collapsed);
@@ -87,7 +88,8 @@ const IndexItemGroup: FC<Props> = (props): JSX.Element => {
   };
 
   const handleDeleteGroup = () => {
-    setComponentIdToDelete(props.id, props.heading);
+    setComponentIdToDelete(props.id);
+    setComponentTitleToDelete(props.heading);
     setShowPopup(true);
   };
 

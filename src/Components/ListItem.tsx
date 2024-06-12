@@ -1,4 +1,10 @@
-import React, { CSSProperties, FC, useEffect, useState } from "react";
+import React, {
+  CSSProperties,
+  FC,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import {
   IoRemoveCircleOutline,
   IoTrashSharp,
@@ -7,6 +13,7 @@ import {
 
 import styles from "../Styles/Home.module.css";
 import stylesGlobal from "../Styles/Global.module.css";
+import { GlobalContext } from "../Context/GlobalContext";
 
 interface Item {
   id: string;
@@ -37,6 +44,8 @@ const ListItem: FC<Props> = (props): JSX.Element => {
   const [confirmRemove, setConfirmRemove] = useState<boolean>(false);
   const [showDelete, setShowDelete] = useState<boolean>(true);
 
+  const { askConfirmation } = useContext(GlobalContext);
+
   useEffect(() => {
     if (props.active && props.editing) {
       props.setActive("");
@@ -66,6 +75,10 @@ const ListItem: FC<Props> = (props): JSX.Element => {
   };
 
   const handleConfirmRemove = () => {
+    if (!askConfirmation) {
+      handleRemoveItem(props.item.id);
+      return;
+    }
     setConfirmRemove(true);
   };
 
@@ -161,7 +174,6 @@ const ListItem: FC<Props> = (props): JSX.Element => {
                 size={20}
                 color="#db4737"
                 className={stylesGlobal.icon}
-                // onClick={() => handleRemoveItem(props.item.id)}
                 onClick={handleConfirmRemove}
               />
             </div>

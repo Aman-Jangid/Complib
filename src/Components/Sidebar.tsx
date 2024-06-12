@@ -45,8 +45,6 @@ function Sidebar() {
 
   const { category, setCategory } = useContext(GlobalContext);
 
-  console.log(category);
-
   useEffect(() => {
     const index = buttons.findIndex((button) => button.text === category);
     handleClick(index);

@@ -8,12 +8,16 @@ interface DeletePopUpProps {
 }
 
 const DeletePopUp: React.FC<DeletePopUpProps> = ({ handleDeleteComponent }) => {
-  const { setShowPopup, componentIdToDelete, setComponentIdToDelete } =
-    useContext(PopupContext);
+  const {
+    setShowPopup,
+    componentIdToDelete,
+    setComponentIdToDelete,
+    componentTitleToDelete,
+  } = useContext(PopupContext);
 
   const handleNoClick = () => {
     setShowPopup(false);
-    setComponentIdToDelete(null, null);
+    setComponentIdToDelete(null);
   };
 
   const handleYesClick = () => {
@@ -21,15 +25,16 @@ const DeletePopUp: React.FC<DeletePopUpProps> = ({ handleDeleteComponent }) => {
       handleDeleteComponent(componentIdToDelete);
     }
     setShowPopup(false);
-    setComponentIdToDelete(null, null);
+    setComponentIdToDelete(null);
   };
 
   return (
     <PopUp>
       <div className={stylesGlobal.deletePopup}>
         <p>
-          Are you sure you want to delete{" "}
-          <span style={{ color: "#e75c40" }}>{"title"}</span> component group?
+          Are you sure you want to delete the{" "}
+          <span style={{ color: "#e75c40" }}>{componentTitleToDelete}</span>{" "}
+          component group?
         </p>
         <div style={{ display: "flex", gap: "1rem" }}>
           <button

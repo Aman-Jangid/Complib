@@ -5,6 +5,12 @@ interface GlobalContextProps {
   setCategory: (category: string) => void;
   componentType: string;
   setComponentType: (componentType: string) => void;
+  askConfirmation: boolean;
+  setAskConfirmation: (askConfirmation: boolean) => void;
+  gridColumns: number;
+  setGridColumns: (gridColumns: number) => void;
+  colorTheme: string;
+  setColorTheme: (colorTheme: string) => void;
 }
 
 const GlobalContext = createContext<GlobalContextProps>({
@@ -12,6 +18,12 @@ const GlobalContext = createContext<GlobalContextProps>({
   setCategory: () => {},
   componentType: "Functional",
   setComponentType: () => {},
+  askConfirmation: false,
+  setAskConfirmation: () => {},
+  gridColumns: 3,
+  setGridColumns: () => {},
+  colorTheme: "palenight",
+  setColorTheme: () => {},
 });
 
 interface GlobalProviderProps {
@@ -21,6 +33,9 @@ interface GlobalProviderProps {
 const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
   const [category, setCategory] = useState<string>("React");
   const [componentType, setComponentType] = useState<string>("Functional");
+  const [askConfirmation, setAskConfirmation] = useState<boolean>(false);
+  const [gridColumns, setGridColumns] = useState<number>(3);
+  const [colorTheme, setColorTheme] = useState<string>("palenight");
 
   // get category from local storage
   useEffect(() => {
@@ -38,7 +53,18 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
 
   return (
     <GlobalContext.Provider
-      value={{ category, setCategory, componentType, setComponentType }}
+      value={{
+        category,
+        setCategory,
+        componentType,
+        setComponentType,
+        askConfirmation,
+        setAskConfirmation,
+        gridColumns,
+        setGridColumns,
+        colorTheme,
+        setColorTheme,
+      }}
     >
       {children}
     </GlobalContext.Provider>
