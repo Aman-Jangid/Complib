@@ -274,6 +274,30 @@
   border-left: 1px solid #424769;
 }
 
+.sidebarEditButton {
+  background-color: #424769;
+  border-radius: 10px;
+  border: none;
+  color: #8e96be;
+  margin: 0 1rem;
+  padding: 0.3rem 0.5rem;
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  gap: 5px;
+}
+
+.sidebarEditButton:hover {
+  color: #ccc;
+  cursor: pointer;
+}
+
+.sidebarEditButton:active {
+  color: #fff;
+  background-color: #2e3249;
+}
+
 .onThisPage,
 .sidebar {
   position: fixed;

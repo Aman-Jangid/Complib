@@ -29,6 +29,12 @@
   user-select: none;
 }
 
+.iconButtonOptions {
+  position: absolute;
+  right: 2px;
+  top: 2px;
+}
+
 .iconButton:active {
   background-color: #2d3250 !important;
 }

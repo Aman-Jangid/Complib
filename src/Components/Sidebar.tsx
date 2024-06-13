@@ -1,4 +1,6 @@
 import { useContext, useEffect, useState } from "react";
+import { CiEdit } from "react-icons/ci";
+
 import styles from "../Styles/Home.module.css";
 import IconButton from "./IconButton";
 import { GlobalContext } from "../Context/GlobalContext";
@@ -67,6 +69,9 @@ function Sidebar() {
 
   return (
     <div className={styles.sidebar}>
+      <button className={styles.sidebarEditButton}>
+        <CiEdit size={18} /> edit
+      </button>
       {buttons.map((button) => (
         <IconButton
           active={button.active}
