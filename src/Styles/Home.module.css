@@ -19,7 +19,6 @@
 
 .logo {
   grid-column: 1;
-  /* color: rgba(0, 0, 0, 0.3); */
   color: #7077a1;
   user-select: none;
 }
@@ -32,9 +31,8 @@
   border-radius: 20px;
   background-color: #6a7097;
   align-items: center;
-  padding: 0 10px 0 10px;
+  padding: 0 10px;
   grid-template-columns: 3% auto 15%;
-
   transition: all 0.1s;
 }
 
@@ -144,7 +142,6 @@
   margin-bottom: 5px;
 }
 
-/* SETTINGs */
 .dropdownPage {
   width: 100%;
   display: flex;
@@ -160,7 +157,7 @@
   width: 100%;
   gap: 10px;
   padding: 10px 0;
-  margin: 10px 0px;
+  margin: 10px 0;
   border-bottom: 1px solid #7077a1;
 }
 
@@ -171,7 +168,7 @@
   align-items: center;
   gap: 10px;
   padding: 10px 0;
-  margin: 5px 0px;
+  margin: 5px 0;
   border-bottom: 1px solid #7077a1;
 }
 
@@ -236,8 +233,7 @@
 
 .contentGrid {
   position: relative;
-  margin-left: 1.5rem;
-  margin-right: 1.5rem;
+  margin: 1.5rem;
   margin-bottom: 110vh;
   display: grid;
   row-gap: 2rem;
@@ -323,7 +319,6 @@
   height: 100%;
   overflow: scroll;
   overflow-x: hidden;
-  /* scrollbar-width: none; */
 }
 
 .indexItemsGroup {
@@ -402,6 +397,7 @@
 /* Containers */
 
 .containerCard {
+  position: relative;
   width: 100%;
   height: 400px;
   background-color: rgba(0, 0, 0, 0.3);
@@ -413,8 +409,8 @@
 }
 
 .componentContainer {
-  width: 95%;
-  margin-top: 10px;
+  position: relative;
+  width: 100%;
   height: 300px;
   display: flex;
   border-radius: 5px;
@@ -422,25 +418,40 @@
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.3);
   overflow: hidden;
+  display: flex;
 }
 
 .componentTitle {
-  width: 100%;
+  width: 92%;
   height: 24px;
-  color: #6a7097;
   text-align: start;
   display: flex;
   padding: 10px 0;
   align-items: center;
-  padding-left: 20px;
+  justify-content: space-between;
+  color: #6a7097;
+}
+
+.componentTitleInput {
+  color: inherit;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  font-weight: bold;
+  width: 100%;
 }
 
 .componentOptions {
+  width: 90%;
+  padding: 0 10px;
   display: flex;
+  justify-content: space-evenly;
   gap: 10px;
 }
 
-.componentOptions .componentButton,
+.componentOptions,
+.componentButton,
 .componentButtonContainer {
   background-color: #424769;
   padding: 3px 6px;
@@ -450,10 +461,31 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.2s;
+}
+
+.componentButton {
+  width: 100%;
 }
 
 .componentButtonContainer {
-  margin: 0;
+  position: absolute;
+  background-color: #1f2338;
+  bottom: 0;
+  right: 0;
+  margin: 10px;
+}
+
+.componentButtonContainer .componentButton {
+  background-color: #1f2338;
+}
+
+.componentButtonContainer button:hover {
+  background-color: #2e3249;
+}
+
+.componentButtonContainer button:active {
+  background-color: #6a7097;
 }
 
 .componentOptions .componentButton:hover {
@@ -466,16 +498,73 @@
 
 .componentZoomInput {
   display: flex;
-  width: 24px;
+  width: 20px;
   align-items: center;
-  background-color: #424769;
+  text-align: center;
+  background-color: #1f2338;
   color: #acb1d1;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 14px;
   border: none;
 }
 
 .componentCodeContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: #262a33;
+  position: absolute;
+  bottom: -100%;
+  transition: all 0.4s;
+}
+
+.componentCodeContainer.activeCodeContainer {
+  transform: translateY(-100%);
+}
+
+.codeEditorAbsoluteButton {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: transparent;
+  color: #7077a1;
+  border: none;
+  border-radius: 5px;
+  padding: 3px 6px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.componentCodeEditor {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.componentCodeEditorContent {
+  background-color: #161827;
+  width: 100%;
+  height: 100%;
+}
+
+.codeEditorLangSelection {
+  width: 100%;
+  height: 35px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.codeEditorLangSelection button {
+  background-color: transparent;
+  color: #7077a1;
+  border: none;
+  text-transform: uppercase;
+  font-size: 16px;
+  padding: 5px 10px;
+  margin: 0 5px;
+  cursor: pointer;
 }
 
 .reactContainer {
@@ -486,3 +575,120 @@
   display: flex;
   justify-content: center;
 }
+
+/* CODE EDITOR */
+
+.codeEditor {
+  width: 100%;
+  text-align: start;
+  border: none;
+  outline: none;
+  padding: 0;
+  font-family: "Fira Code", monospace;
+  font-size: 11px;
+  position: relative;
+}
+
+.codeEditor .componentTitle {
+  position: absolute;
+  bottom: -5px;
+  right: -52%;
+}
+
+.codeEditor > div > div {
+  height: 365px !important;
+}
+
+.codeEditor ::-webkit-scrollbar {
+  background-color: #161827;
+}
+
+.codeEditor ::-webkit-scrollbar-thumb {
+  background-color: #282a36;
+}
+
+.react-codemirror2 {
+  width: 100%;
+  height: 100%;
+}
+
+.react-codemirror2 > .CodeMirror {
+  height: 400px !important;
+}
+
+/* Responsive Design */
+
+/* @media (max-width: 1024px) {
+  .header {
+    grid-template-columns: 15% 45% 25% 15%;
+  }
+
+  .contentContainer {
+    flex-direction: column;
+  }
+
+  .contentArea {
+    width: 100%;
+  }
+
+  .onThisPage,
+  .sidebarSection {
+    width: 100%;
+    height: auto;
+  }
+} */
+
+/* @media (max-width: 768px) {
+  .header {
+    grid-template-columns: 20% 40% 20% 20%;
+  }
+
+  .contentGrid {
+    grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+  }
+
+  .onThisPage,
+  .sidebarSection {
+    display: none;
+  }
+
+  .contentHeading {
+    font-size: 20px;
+  }
+
+  .componentContainer,
+  .containerCard {
+    height: auto;
+  }
+} */
+
+/* @media (max-width: 480px) {
+  .header {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .logo {
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  .searchBar {
+    grid-column: 1 / -1;
+    margin: 10px 0;
+  }
+
+  .userDropdown {
+    width: 100%;
+  }
+
+  .contentHeading {
+    font-size: 18px;
+    margin: 0 1rem;
+  }
+
+  .contentGrid {
+    grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+    margin: 1rem;
+  }
+} */
