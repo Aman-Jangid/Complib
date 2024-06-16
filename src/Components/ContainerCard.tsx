@@ -1,18 +1,11 @@
 import React, { FC, useEffect, useReducer } from "react";
-import {
-  BiCog,
-  BiCopy,
-  BiEdit,
-  BiZoomIn,
-  BiZoomOut,
-  BiCodeBlock,
-  BiCheckCircle,
-  BiDownArrow,
-  BiCopyAlt,
-} from "react-icons/bi";
 import styles from "../Styles/Home.module.css";
-import stylesGlobal from "../Styles/Global.module.css";
-import CodeEditor from "./CodeEditor";
+
+import ZoomControls from "./ZoomControls";
+import TitleSection from "./TitleSection";
+import OptionsSection from "./OptionsSection";
+import StateEditor from "./StateEditor";
+import CodeSection from "./CodeSection";
 
 type Props = {
   title: string;
@@ -79,7 +72,8 @@ const ContainerCard: FC<Props> = ({
 
   useEffect(() => {
     dispatch({ type: "SET_TITLE", payload: title });
-  }, [title]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (state.zoomValue < 1) {
@@ -103,227 +97,63 @@ const ContainerCard: FC<Props> = ({
     <div className={styles.containerCard}>
       <div
         className={styles.componentContainer}
-        style={{
-          height: state.modifying ? "200px" : "300px",
-        }}
+        style={{ height: state.modifying ? "200px" : "300px" }}
       >
-        {/* ZOOM BUTTONS */}
-        <div className={styles.componentButtonContainer}>
-          <button
-            className={styles.componentButton}
-            onClick={() =>
-              dispatch({
-                type: "SET_ZOOM_VALUE",
-                payload: state.zoomValue - 1,
-              })
-            }
-          >
-            <BiZoomOut size={18} />
-          </button>
-          <input
-            value={"x" + state.zoomValue}
-            className={styles.componentZoomInput}
-            max={3}
-            min={1}
-            disabled
-          />
-          <button
-            className={styles.componentButton}
-            onClick={() =>
-              dispatch({
-                type: "SET_ZOOM_VALUE",
-                payload: state.zoomValue + 1,
-              })
-            }
-          >
-            <BiZoomIn size={18} />
-          </button>
-        </div>
+        <ZoomControls
+          zoomValue={state.zoomValue}
+          setZoomValue={(value) =>
+            dispatch({ type: "SET_ZOOM_VALUE", payload: value })
+          }
+        />
       </div>
       {!state.modifying ? (
         <>
-          {" "}
-          <div className={styles.componentTitle}>
-            <input
-              className={styles.componentTitleInput}
-              value={"⏺ " + state.title}
-              type="text"
-              onChange={(e) =>
-                dispatch({ type: "SET_TITLE", payload: e.target.value })
-              }
-              disabled={state.editingTitle ? false : true}
-              ref={
-                state.editingTitle
-                  ? (input) => input && input.focus()
-                  : undefined
-              }
-            />
-            <BiCheckCircle
-              size={22}
-              className={stylesGlobal.icon}
-              onClick={() => dispatch({ type: "TOGGLE_EDITING_TITLE" })}
-              color={state.editingTitle ? "inherit" : "transparent"}
-            />
-          </div>
-          <div className={styles.componentOptions}>
-            <button
-              className={styles.componentButton}
-              onClick={() => dispatch({ type: "TOGGLE_EDITING_TITLE" })}
-              style={state.editingTitle ? { backgroundColor: "#1f2338" } : {}}
-            >
-              <BiEdit size={22} />
-            </button>
-            <button
-              className={styles.componentButton}
-              onClick={() => {
-                navigator.clipboard.writeText(state.title);
-                dispatch({ type: "SET_COPIED", payload: true });
-              }}
-            >
-              {state.copied ? (
-                <BiCheckCircle
-                  size={22}
-                  className={stylesGlobal.icon}
-                  color="green"
-                />
-              ) : (
-                <BiCopy size={22} />
-              )}
-            </button>
-            <button
-              className={styles.componentButton}
-              onClick={() =>
-                dispatch({ type: "SET_MODIFYING", payload: !state.modifying })
-              }
-            >
-              <BiCog size={22} />
-            </button>
-            <button
-              className={styles.componentButton}
-              onClick={() => dispatch({ type: "TOGGLE_SHOW_CODE" })}
-            >
-              <BiCodeBlock size={22} />
-            </button>
-          </div>{" "}
+          <TitleSection
+            title={state.title}
+            editingTitle={state.editingTitle}
+            setTitle={(title) =>
+              dispatch({ type: "SET_TITLE", payload: title })
+            }
+            toggleEditingTitle={() =>
+              dispatch({ type: "TOGGLE_EDITING_TITLE" })
+            }
+          />
+          <OptionsSection
+            editingTitle={state.editingTitle}
+            copied={state.copied}
+            toggleEditingTitle={() =>
+              dispatch({ type: "TOGGLE_EDITING_TITLE" })
+            }
+            setCopied={(value) =>
+              dispatch({ type: "SET_COPIED", payload: value })
+            }
+            toggleModifying={() =>
+              dispatch({ type: "SET_MODIFYING", payload: !state.modifying })
+            }
+            toggleShowCode={() => dispatch({ type: "TOGGLE_SHOW_CODE" })}
+          />
         </>
       ) : (
-        <div className={styles.componentStateEditor}>
-          <h3 style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <BiDownArrow
-              size={18}
-              color="#f19583"
-              className={stylesGlobal.icon}
-              onClick={
-                state.modifying
-                  ? () => dispatch({ type: "SET_MODIFYING", payload: false })
-                  : () => {}
-              }
-            />{" "}
-            Component Properties and State
-          </h3>
-          <div className={styles.componentProperties}>
-            <div>
-              <label>Property 1</label>
-              <input type="text" />
-            </div>
-            <div>
-              <label>Property 2</label>
-              <input type="text" />
-            </div>
-            <div>
-              <label>Property 3</label>
-              <input type="text" />
-            </div>
-            <div>
-              <label>Property 4</label>
-              <input type="text" />
-            </div>
-          </div>
-        </div>
+        <StateEditor
+          modifying={state.modifying}
+          toggleModifying={() =>
+            dispatch({ type: "SET_MODIFYING", payload: !state.modifying })
+          }
+        />
       )}
-      <div
-        className={
-          styles.componentCodeContainer +
-          " " +
-          (state.showCode ? styles.activeCodeContainer : "")
+      <CodeSection
+        showCode={state.showCode}
+        languages={languages}
+        selectedLanguage={state.selectedLanguage}
+        code={code}
+        setSelectedLanguage={(lang) =>
+          dispatch({ type: "SET_SELECTED_LANGUAGE", payload: lang })
         }
-      >
-        <div className={styles.componentCodeEditor}>
-          <div className={styles.componentCodeEditorContent}>
-            <div className={styles.codeEditorLangSelection}>
-              {languages.map((lang, index) => (
-                <button
-                  key={index}
-                  className={styles.codeEditorLangButton}
-                  onClick={() =>
-                    dispatch({ type: "SET_SELECTED_LANGUAGE", payload: lang })
-                  }
-                  style={
-                    state.selectedLanguage === lang
-                      ? {
-                          borderBottom: "2px solid #f19583",
-                          color: "#f19583",
-                        }
-                      : {}
-                  }
-                >
-                  {lang}
-                </button>
-              ))}
-            </div>
-            <CodeEditor
-              title={state.title}
-              language={
-                state.selectedLanguage === "jsx"
-                  ? "jsx"
-                  : state.selectedLanguage.toLowerCase()
-              }
-              code={state.selectedLanguage === "jsx" ? code[0] : code[1]}
-            />
-          </div>
-          <button
-            className={styles.codeEditorAbsoluteButton}
-            style={{ right: "-5px", top: "-5px" }}
-            onClick={() => dispatch({ type: "TOGGLE_SHOW_CODE" })}
-          >
-            <BiDownArrow
-              size={20}
-              className={stylesGlobal.icon}
-              color="#f19583"
-            />
-          </button>
-          <button
-            className={styles.codeEditorAbsoluteButton}
-            style={{
-              right: "30px",
-              top: "-5px",
-              display: "flex",
-              alignItems: "center",
-              gap: "5px",
-            }}
-            onClick={() => {
-              navigator.clipboard.writeText(state.title);
-              dispatch({ type: "SET_COPIED", payload: true });
-            }}
-          >
-            {" "}
-            {state.copied ? (
-              <span
-                style={{
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  textAlign: "center",
-                }}
-              >
-                Copied!
-              </span>
-            ) : (
-              ""
-            )}
-            <BiCopyAlt size={20} className={stylesGlobal.icon} />
-          </button>
-        </div>
-      </div>
+        toggleShowCode={() => dispatch({ type: "TOGGLE_SHOW_CODE" })}
+        title={state.title}
+        copied={state.copied}
+        setCopied={(value) => dispatch({ type: "SET_COPIED", payload: value })}
+      />
     </div>
   );
 };
