@@ -419,6 +419,7 @@
   background-color: rgba(0, 0, 0, 0.3);
   overflow: hidden;
   display: flex;
+  transition: all 0.3s;
 }
 
 .componentTitle {
@@ -614,6 +615,22 @@
 
 .react-codemirror2 > .CodeMirror {
   height: 400px !important;
+}
+
+.componentStateEditor {
+  border-radius: 10px;
+  color: #8e96be;
+  display: grid;
+  height: 100px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 9fr;
+}
+
+.componentStateEditor h3 {
+  color: #7077a1;
+  font-weight: bold;
+  font-size: 16px;
+  margin: 10px;
 }
 
 /* Responsive Design */

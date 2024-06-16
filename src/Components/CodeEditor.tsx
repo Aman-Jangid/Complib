@@ -14,10 +14,10 @@ require("codemirror/mode/xml/xml");
 require("codemirror/mode/dart/dart");
 require("codemirror/mode/htmlmixed/htmlmixed");
 
-type Languages = "javascript" | "jsx" | "css" | "xml" | "dart" | "htmlmixed";
+// type Languages = "javascript" | "jsx" | "css" | "xml" | "dart" | "htmlmixed";
 
 interface Props {
-  language: Languages;
+  language: string;
   code: string[];
   title: string;
 }

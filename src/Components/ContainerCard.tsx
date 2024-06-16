@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import React, { FC, useEffect, useReducer } from "react";
 import {
   BiCog,
   BiCopy,
@@ -14,6 +14,12 @@ import styles from "../Styles/Home.module.css";
 import stylesGlobal from "../Styles/Global.module.css";
 import CodeEditor from "./CodeEditor";
 
+type Props = {
+  title: string;
+  languages: string[];
+  code: string[][];
+};
+
 type State = {
   zoomValue: number;
   showCode: boolean;
@@ -21,6 +27,7 @@ type State = {
   title: string;
   copied: boolean;
   selectedLanguage: string;
+  modifying: boolean;
 };
 
 type Action =
@@ -29,7 +36,8 @@ type Action =
   | { type: "TOGGLE_EDITING_TITLE" }
   | { type: "SET_TITLE"; payload: string }
   | { type: "SET_COPIED"; payload: boolean }
-  | { type: "SET_SELECTED_LANGUAGE"; payload: string };
+  | { type: "SET_SELECTED_LANGUAGE"; payload: string }
+  | { type: "SET_MODIFYING"; payload: boolean };
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -45,6 +53,8 @@ const reducer = (state: State, action: Action): State => {
       return { ...state, copied: action.payload };
     case "SET_SELECTED_LANGUAGE":
       return { ...state, selectedLanguage: action.payload };
+    case "SET_MODIFYING":
+      return { ...state, modifying: action.payload };
     default:
       return state;
   }
@@ -54,13 +64,22 @@ const initialState: State = {
   zoomValue: 1,
   showCode: false,
   editingTitle: false,
-  title: "⏺ Icon with text button",
+  title: "",
   copied: false,
   selectedLanguage: "JSX",
+  modifying: false,
 };
 
-const ContainerCard = () => {
+const ContainerCard: FC<Props> = ({
+  title,
+  code,
+  languages,
+}): React.JSX.Element => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    dispatch({ type: "SET_TITLE", payload: title });
+  }, [title]);
 
   useEffect(() => {
     if (state.zoomValue < 1) {
@@ -80,11 +99,14 @@ const ContainerCard = () => {
     }
   }, [state.copied]);
 
-  const languages = ["JSX", "css"];
-
   return (
     <div className={styles.containerCard}>
-      <div className={styles.componentContainer}>
+      <div
+        className={styles.componentContainer}
+        style={{
+          height: state.modifying ? "200px" : "300px",
+        }}
+      >
         {/* ZOOM BUTTONS */}
         <div className={styles.componentButtonContainer}>
           <button
@@ -118,61 +140,107 @@ const ContainerCard = () => {
           </button>
         </div>
       </div>
-      <div className={styles.componentTitle}>
-        <input
-          className={styles.componentTitleInput}
-          value={state.title}
-          type="text"
-          onChange={(e) =>
-            dispatch({ type: "SET_TITLE", payload: e.target.value })
-          }
-          disabled={state.editingTitle ? false : true}
-          ref={
-            state.editingTitle ? (input) => input && input.focus() : undefined
-          }
-        />
-        <BiCheckCircle
-          size={22}
-          className={stylesGlobal.icon}
-          onClick={() => dispatch({ type: "TOGGLE_EDITING_TITLE" })}
-          color={state.editingTitle ? "inherit" : "transparent"}
-        />
-      </div>
-      <div className={styles.componentOptions}>
-        <button
-          className={styles.componentButton}
-          onClick={() => dispatch({ type: "TOGGLE_EDITING_TITLE" })}
-          style={state.editingTitle ? { backgroundColor: "#1f2338" } : {}}
-        >
-          <BiEdit size={22} />
-        </button>
-        <button
-          className={styles.componentButton}
-          onClick={() => {
-            navigator.clipboard.writeText(state.title);
-            dispatch({ type: "SET_COPIED", payload: true });
-          }}
-        >
-          {state.copied ? (
+      {!state.modifying ? (
+        <>
+          {" "}
+          <div className={styles.componentTitle}>
+            <input
+              className={styles.componentTitleInput}
+              value={"⏺ " + state.title}
+              type="text"
+              onChange={(e) =>
+                dispatch({ type: "SET_TITLE", payload: e.target.value })
+              }
+              disabled={state.editingTitle ? false : true}
+              ref={
+                state.editingTitle
+                  ? (input) => input && input.focus()
+                  : undefined
+              }
+            />
             <BiCheckCircle
               size={22}
               className={stylesGlobal.icon}
-              color="green"
+              onClick={() => dispatch({ type: "TOGGLE_EDITING_TITLE" })}
+              color={state.editingTitle ? "inherit" : "transparent"}
             />
-          ) : (
-            <BiCopy size={22} />
-          )}
-        </button>
-        <button className={styles.componentButton}>
-          <BiCog size={22} />
-        </button>
-        <button
-          className={styles.componentButton}
-          onClick={() => dispatch({ type: "TOGGLE_SHOW_CODE" })}
-        >
-          <BiCodeBlock size={22} />
-        </button>
-      </div>
+          </div>
+          <div className={styles.componentOptions}>
+            <button
+              className={styles.componentButton}
+              onClick={() => dispatch({ type: "TOGGLE_EDITING_TITLE" })}
+              style={state.editingTitle ? { backgroundColor: "#1f2338" } : {}}
+            >
+              <BiEdit size={22} />
+            </button>
+            <button
+              className={styles.componentButton}
+              onClick={() => {
+                navigator.clipboard.writeText(state.title);
+                dispatch({ type: "SET_COPIED", payload: true });
+              }}
+            >
+              {state.copied ? (
+                <BiCheckCircle
+                  size={22}
+                  className={stylesGlobal.icon}
+                  color="green"
+                />
+              ) : (
+                <BiCopy size={22} />
+              )}
+            </button>
+            <button
+              className={styles.componentButton}
+              onClick={() =>
+                dispatch({ type: "SET_MODIFYING", payload: !state.modifying })
+              }
+            >
+              <BiCog size={22} />
+            </button>
+            <button
+              className={styles.componentButton}
+              onClick={() => dispatch({ type: "TOGGLE_SHOW_CODE" })}
+            >
+              <BiCodeBlock size={22} />
+            </button>
+          </div>{" "}
+        </>
+      ) : (
+        <div className={styles.componentStateEditor}>
+          <h3 style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <BiDownArrow
+              size={18}
+              color="#f19583"
+              className={stylesGlobal.icon}
+              onClick={
+                state.modifying
+                  ? () => dispatch({ type: "SET_MODIFYING", payload: false })
+                  : () => {}
+              }
+            />{" "}
+            Component Properties and State
+          </h3>
+          <div className={styles.componentProperties}>
+            <div>
+              <label>Property 1</label>
+              <input type="text" />
+            </div>
+            <div>
+              <label>Property 2</label>
+              <input type="text" />
+            </div>
+            <div>
+              <label>Property 3</label>
+              <input type="text" />
+            </div>
+            <div>
+              <label>Property 4</label>
+              <input type="text" />
+            </div>
+          </div>
+        </div>
+      )}
       <div
         className={
           styles.componentCodeContainer +
@@ -205,80 +273,12 @@ const ContainerCard = () => {
             </div>
             <CodeEditor
               title={state.title}
-              language={state.selectedLanguage === "JSX" ? "jsx" : "css"}
-              code={
-                state.selectedLanguage === "JSX"
-                  ? [
-                      `import { ChangeEvent, FC, useRef, useState } from "react";
-                      import styles from "../Styles/Home.module.css";
-                      import Shortcut from "./Shortcut";
-                      
-                      import { CiSearch } from "react-icons/ci";
-                      
-                      interface Props {
-                        value: string;
-                        setValue: Function;
-                      }
-                      
-                      const SearchBar: FC<Props> = (props): JSX.Element => {
-                        const [focused, setFocused] = useState<boolean>(false);
-                      
-                        const inputRef = useRef<HTMLInputElement>(null);
-                      
-                        const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-                          props.setValue(event.target.value);
-                        };
-                      
-                        return (
-                          <div
-                            className={styles.searchBar}
-                            style={{
-                              outline: focused ? "3px solid #7077a1" : "none",
-                            }}
-                          >
-                            <div>
-                              <CiSearch color="white" size={22} />
-                            </div>
-                            <div>
-                              <input
-                                type="text"
-                                value={props.value}
-                                placeholder="Search"
-                                onChange={(e) => handleInputChange(e)}
-                                onFocus={() => setFocused(true)}
-                                onBlur={() => setFocused(false)}
-                                ref={inputRef}
-                              />
-                            </div>
-                            <div>
-                              <Shortcut
-                                modifierKey="ctrlKey"
-                                symbolKey="k"
-                                function={() =>
-                                  focused ? inputRef.current?.blur() : inputRef.current?.focus()
-                                }
-                              />
-                            </div>
-                          </div>
-                        );
-                      };
-                      
-                      export default SearchBar;
-                      `.replaceAll("  ", ""),
-                    ]
-                  : [
-                      `.codeEditor {
-                        width: 100%;
-                        height: 100%;
-                        text-align: start;
-                        border: none;
-                        outline: none;
-                        padding: 0;
-                        font-family: "Fira Code", monospace;
-                        font-size: 11px;
-                      }`.replaceAll("  ", ""),
-                    ]
+              language={
+                state.selectedLanguage === "jsx"
+                  ? "jsx"
+                  : state.selectedLanguage.toLowerCase()
               }
+              code={state.selectedLanguage === "jsx" ? code[0] : code[1]}
             />
           </div>
           <button
@@ -286,13 +286,40 @@ const ContainerCard = () => {
             style={{ right: "-5px", top: "-5px" }}
             onClick={() => dispatch({ type: "TOGGLE_SHOW_CODE" })}
           >
-            <BiDownArrow size={20} className={stylesGlobal.icon} />
+            <BiDownArrow
+              size={20}
+              className={stylesGlobal.icon}
+              color="#f19583"
+            />
           </button>
           <button
             className={styles.codeEditorAbsoluteButton}
-            style={{ right: "30px", top: "-5px" }}
-            onClick={() => {}}
+            style={{
+              right: "30px",
+              top: "-5px",
+              display: "flex",
+              alignItems: "center",
+              gap: "5px",
+            }}
+            onClick={() => {
+              navigator.clipboard.writeText(state.title);
+              dispatch({ type: "SET_COPIED", payload: true });
+            }}
           >
+            {" "}
+            {state.copied ? (
+              <span
+                style={{
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
+                Copied!
+              </span>
+            ) : (
+              ""
+            )}
             <BiCopyAlt size={20} className={stylesGlobal.icon} />
           </button>
         </div>
