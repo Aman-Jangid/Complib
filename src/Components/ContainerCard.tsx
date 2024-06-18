@@ -6,6 +6,7 @@ import TitleSection from "./TitleSection";
 import OptionsSection from "./OptionsSection";
 import StateEditor from "./StateEditor";
 import CodeSection from "./CodeSection";
+import ReactContainer from "./ReactContainer";
 
 type Props = {
   title: string;
@@ -93,12 +94,15 @@ const ContainerCard: FC<Props> = ({
     }
   }, [state.copied]);
 
+  console.log(code[1]);
+
   return (
     <div className={styles.containerCard}>
       <div
         className={styles.componentContainer}
         style={{ height: state.modifying ? "200px" : "300px" }}
       >
+        <ReactContainer Code={code[0][0]} />
         <ZoomControls
           zoomValue={state.zoomValue}
           setZoomValue={(value) =>

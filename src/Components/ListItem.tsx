@@ -31,9 +31,9 @@ interface Props {
 }
 
 let activeStyles: CSSProperties = {
-  backgroundColor: "#424769",
+  backgroundColor: "#f19583",
   padding: "4px 10px 4px 5px",
-  color: "#ddd",
+  color: "#fff",
   margin: "2px 0 5px 2px",
   textAlign: "center",
   borderRadius: "5px",

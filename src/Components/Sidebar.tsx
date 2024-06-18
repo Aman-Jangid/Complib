@@ -45,7 +45,7 @@ function Sidebar() {
     },
   ]);
 
-  const { category, setCategory } = useContext(GlobalContext);
+  const { category, setCategory, width } = useContext(GlobalContext);
 
   useEffect(() => {
     const index = buttons.findIndex((button) => button.text === category);
@@ -67,21 +67,26 @@ function Sidebar() {
     console.log("Adding new Language/Framework Button!");
   };
 
+  // get screen size and set size
+
   return (
-    <div className={styles.sidebar}>
+    <div
+      className={styles.sidebar}
+      style={{ width: width > 1800 ? "15%" : "5%" }}
+    >
       <button className={styles.sidebarEditButton}>
         <CiEdit size={18} /> edit
       </button>
       {buttons.map((button) => (
         <IconButton
           active={button.active}
-          backgroundColor="#7077A1"
+          backgroundColor={button.active ? "#f19583" : "#7077A1"}
           color="white"
           width="150%"
           height="44px"
           iconPack={button.iconPack}
           iconName={button.iconName}
-          text={button.text}
+          text={width > 1800 ? button.text : ""}
           textColor="white"
           key={button.key}
           onClick={() => handleClick(button.key)}

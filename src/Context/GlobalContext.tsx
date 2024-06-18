@@ -11,6 +11,8 @@ interface GlobalContextProps {
   setGridColumns: (gridColumns: number) => void;
   colorTheme: string;
   setColorTheme: (colorTheme: string) => void;
+  width: number;
+  setWidth: (width: number) => void;
 }
 
 const GlobalContext = createContext<GlobalContextProps>({
@@ -24,6 +26,8 @@ const GlobalContext = createContext<GlobalContextProps>({
   setGridColumns: () => {},
   colorTheme: "palenight",
   setColorTheme: () => {},
+  width: window.innerWidth,
+  setWidth: () => {},
 });
 
 interface GlobalProviderProps {
@@ -36,6 +40,7 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
   const [askConfirmation, setAskConfirmation] = useState<boolean>(false);
   const [gridColumns, setGridColumns] = useState<number>(3);
   const [colorTheme, setColorTheme] = useState<string>("palenight");
+  const [width, setWidth] = useState(window.innerWidth);
 
   // get category from local storage
   useEffect(() => {
@@ -64,6 +69,8 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
         setGridColumns,
         colorTheme,
         setColorTheme,
+        width,
+        setWidth,
       }}
     >
       {children}

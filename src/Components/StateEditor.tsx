@@ -21,21 +21,43 @@ const StateEditor: FC<StateEditorProps> = ({ modifying, toggleModifying }) => {
         Component Properties and State
       </h3>
       <div className={styles.componentProperties}>
-        <div>
-          <label>Property 1</label>
-          <input type="text" />
+        <div className={styles.propsSection}>
+          <span>Props</span>
+          <div>
+            <label>Prop 1</label>
+            <input type="text" />
+          </div>
+          <div>
+            <label>Prop 2</label>
+            <input type="text" />
+          </div>
+          <div>
+            <label>Prop 3</label>
+            <input type="text" />
+          </div>
+          <div>
+            <label>Prop 4</label>
+            <input type="text" />
+          </div>
         </div>
-        <div>
-          <label>Property 2</label>
-          <input type="text" />
-        </div>
-        <div>
-          <label>Property 3</label>
-          <input type="text" />
-        </div>
-        <div>
-          <label>Property 4</label>
-          <input type="text" />
+        <div className={styles.stateSection}>
+          <span>State</span>
+          <div>
+            <label>State 1</label>
+            <input type="text" />
+          </div>
+          <div>
+            <label>State 2</label>
+            <input type="text" />
+          </div>
+          <div>
+            <label>State 3</label>
+            <input type="text" />
+          </div>
+          <div>
+            <label>State 4</label>
+            <input type="text" />
+          </div>
         </div>
       </div>
     </div>

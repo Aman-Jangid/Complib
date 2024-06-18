@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import styles from "../Styles/Home.module.css";
 
@@ -10,7 +10,15 @@ import Sidebar from "../Components/Sidebar";
 import { GlobalContext } from "../Context/GlobalContext";
 
 function Home() {
-  const { componentType } = useContext(GlobalContext);
+  const { componentType, setWidth } = useContext(GlobalContext);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <div className={styles.home}>

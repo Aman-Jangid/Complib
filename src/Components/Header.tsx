@@ -83,7 +83,7 @@ function Header() {
               </div>
               <IconButton
                 active={false}
-                backgroundColor="rgba(0, 0, 0, 0.1)"
+                backgroundColor="#7077a1"
                 color="white"
                 width="100%"
                 iconSize={20}
@@ -99,7 +99,7 @@ function Header() {
               />
               <IconButton
                 active={false}
-                backgroundColor="rgba(0, 0, 0, 0.1)"
+                backgroundColor="#7077a1"
                 color="white"
                 width="100%"
                 iconSize={20}
@@ -113,7 +113,7 @@ function Header() {
               />
               <IconButton
                 active={false}
-                backgroundColor="rgba(0, 0, 0, 0.1)"
+                backgroundColor="#f19583"
                 color="white"
                 width="100%"
                 iconSize={20}
