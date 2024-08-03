@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { BiDownArrow, BiCopyAlt } from "react-icons/bi";
 import styles from "../Styles/Home.module.css";
 import stylesGlobal from "../Styles/Global.module.css";
@@ -27,6 +27,10 @@ const CodeSection: FC<CodeSectionProps> = ({
   copied,
   setCopied,
 }) => {
+  useEffect(() => {
+    setSelectedLanguage(languages[0]);
+  });
+
   return (
     <div
       className={

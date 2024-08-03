@@ -80,7 +80,7 @@ function Sidebar() {
       {buttons.map((button) => (
         <IconButton
           active={button.active}
-          backgroundColor={button.active ? "#f19583" : "#7077A1"}
+          backgroundColor={button.active ? "#424769" : "#7077A1"}
           color="white"
           width="150%"
           height="44px"

@@ -5,6 +5,8 @@ type Props = {
   Container: FC;
 };
 
+// useInsertionEffect --> css -> JS
+
 const ComponentContainer: FC<Props> = (Props) => {
   // state showCode : Boolean
   let showCode = true;

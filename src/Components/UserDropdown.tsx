@@ -16,11 +16,14 @@ const UserDropdown: FC<Props> = (props): JSX.Element => {
 
   return (
     <div className={styles.userDropdown} onClick={showPanel}>
-      {props.active ? (
-        <IoChevronDown color="white" size={16} />
-      ) : (
-        <IoChevronDown color="white" size={16} />
-      )}
+      <IoChevronDown
+        color="white"
+        size={16}
+        style={{
+          transform: props.active ? "rotate(180deg)" : "rotate(0deg)",
+          transition: "transform 0.3s",
+        }}
+      />
       <p>Username</p>
       <FaUserCircle color="white" size={32} />
     </div>
